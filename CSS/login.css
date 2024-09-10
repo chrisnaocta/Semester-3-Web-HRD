@@ -1,0 +1,13 @@
+.login-container{
+    max-width: 400px; /* Lebar maksimal form login */
+    margin: auto;
+    margin-top: 80px;
+    padding: 20px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    background-color: #f8f9fa;
+}
+
+.login-container h2 {
+    margin-bottom: 20px;
+}
