@@ -1,13 +1,73 @@
-.login-container{
-    max-width: 400px; /* Lebar maksimal form login */
-    margin: auto;
-    margin-top: 80px;
-    padding: 20px;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
-    border-radius: 10px;
-    background-color: #f8f9fa;
+body {
+    font-family: 'Roboto', sans-serif;
+    background: #f0f2f5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
 }
 
-.login-container h2 {
-    margin-bottom: 20px;
+.login-container {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    width: 400px;
+    max-width: 100%;
+}
+
+.login-form {
+    padding: 40px;
+}
+
+.login-form h2 {
+    margin: 0 0 20px;
+    text-align: center;
+}
+
+.input-group {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.input-group .icon {
+    background: #e0e0e0;
+    padding: 10px;
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+    border: 1px solid #ddd;
+    border-right: 0;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-left: 0;
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+}
+
+button {
+    background: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100%;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+button:hover {
+    background: #0056b3;
+}
+
+.error {
+    color: red;
+    text-align: center;
+    margin-top: 10px;
 }

@@ -1,0 +1,20 @@
+SELECT
+	pegawai.idpeg,
+	pegawai.nama,
+	pegawai.iddep, 
+    departemen.departemen, 
+    pegawai.idjab, 
+    jabatan.jabatan, 
+    pegawai.alamat, 
+    pegawai.telepon, 
+    pegawai.email, 
+    pegawai.gaji, 
+    pegawai.status, 
+    pegawai.skerja, 
+    pegawai.cuti, 
+    pegawai.tglkerja, 
+    pegawai.jkelamin, 
+    pegawai.jenjangpendidikan
+FROM pegawai
+LEFT JOIN departemen ON pegawai.idpeg = departemen.iddep
+LEFT JOIN jabatan on pegawai.idjab = jabatan.idjab;

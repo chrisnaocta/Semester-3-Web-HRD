@@ -1,83 +1,314 @@
 body {
+    font-family: 'Roboto', sans-serif;
+    background: #f0f2f5;
+    margin: 0;
     display: flex;
-    min-height: 100vh;
     flex-direction: column;
+    height: 100vh;
 }
 
-.header, .footer {
-    width: calc(100% - 250px); /* Lebar mengikuti lebar konten dengan sidebar */
-    margin-left: 250px;
-    padding: 15px;
+.container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
 }
 
-.header {
-    background-color: #007bff;
-    color: white;
+header {
+    background: #FFD700;
+    color: #000;
+    height: 70px; /* Atur tinggi tetap */
+    padding: 10px;
+    text-align: left;
+    transition: left 0.3s ease, width 0.3s ease;
+    position: fixed;
+    width: calc(100% - 200px);
+    left: 200px;
+    z-index: 1;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.50); /* Tambahkan bayangan */
+}
+
+header.collapsed {
+    left: 100px;
+    width: calc(100% - 100px);
+    text-align: left;
+}
+
+header h4 {
+    font-size: 1.5em;
+    text-align: left;
+    margin: 0;
+}
+
+header h6 {
+    font-size: 1em;
+    text-align: left;
+    margin: 0;
 }
 
 .sidebar {
-    min-width: 250px;
-max-width: 250px;
-background-color: #343a40;
-padding: 15px;
-color: white;
-position: fixed;
-top: 0;
-bottom: 0;
-display: flex;
-flex-direction: column;
-align-items: center;
+    background: #343a40;
+    color: #fff;
+    width: 200px;
+    flex-shrink: 0;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    padding-top: 60px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: width 0.3s ease;
+    z-index: 2;
 }
 
-.sidebar .user-info {
-    margin-bottom: 20px;
-    text-align: center;
-}
-
-.sidebar .user-info img {
+.sidebar.collapsed {
     width: 100px;
-    height: 100px;
+}
+
+.user-info {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.user-photo {
+    width: 80px;
+    height: 80px;
     border-radius: 50%;
     object-fit: cover;
-    border: 2px solid white;
+    margin-bottom: 10px;
 }
 
-.sidebar .user-info p {
-    margin: 10px 0;
-    color: white;
+.user-name {
+    font-size: 16px;
     font-weight: bold;
 }
 
-.sidebar a {
-    color: white;
+.sidebar ul {
+    list-style-type: none;
+    padding: 0;
+    width: 100%;
+}
+
+.sidebar ul li {
+    padding: 10px;
+    text-align: left;
+}
+
+.sidebar ul li a {
+    color: #fff;
     text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
-.sidebar .nav-link.active, .sidebar .nav-link:hover {
-    background-color: #007bff;
+.sidebar ul li a span {
+    flex-grow: 1;
 }
 
-.content-wrapper {
-    margin-left: 250px;
-    padding: 15px;
-    flex: 1;
+.sidebar ul li a i {
+    margin-left: auto;
 }
-.footer {
-    background-color: #343a40;
-    color: white;
+
+.sidebar ul li a:hover {
+    background: #495057;
+}
+
+.sub-menu {
+    display: none;
+    padding-left: 20px;
+}
+
+.sub-menu.open {
+    display: block;
+}
+
+.sub-menu li {
+    padding: 5px 0;
+    font-size: 0.9em;
+}
+
+.arrow {
+    transition: transform 0.3s ease;
+}
+
+.arrow.open {
+    transform: rotate(90deg);
+}
+
+.content {
+    margin-left: 200px;
+    padding: 20px;
+    flex-grow: 1;
+    background: #fff;
+    min-height: calc(100vh - 60px - 80px);
+    padding-top: 80px;
+    transition: margin-left 0.3s ease;
+}
+
+.content.collapsed {
+    margin-left: 100px;
+}
+
+footer {
+    background: #F5F5F5;
+    color: #000;
     text-align: center;
     padding: 10px;
+    position: fixed;
+    width: calc(100% - 200px);
+    bottom: 0;
+    left: 200px;
+    transition: left 0.3s ease, width 0.3s ease;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.20); /* Tetap tambahkan bayangan default */
+}
+
+footer::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 20px;
+    pointer-events: none;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0));
+    z-index: -1; /* Pastikan bayangan di belakang konten */
+}
+
+footer.collapsed {
+    left: 100px;
+    width: calc(100% - 100px);
+}
+
+.toggle-sidebar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #495057;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 10px auto;
+    cursor: pointer;
+}
+
+.sidebar.collapsed ul li {
+    font-size: 12px;
+}
+
+.sidebar.collapsed ul li a {
+    font-size: 12px;
+}
+
+.sidebar.collapsed .sub-menu li {
+    font-size: 10px;
+}
+
+.cards {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
 }
 
 .card {
-    margin-bottom: 20px;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    width: calc(25% - 20px); /* Sesuaikan dengan jumlah kartu per baris */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    text-align: left;
+    position: relative;
+    display: flex;
+    align-items: left; /* Pusatkan item secara vertikal */
+    justify-content: space-between; /* Spasi item secara horizontal */
+    /*height: 150px;  Atur tinggi tetap */
 }
 
-.nav-link .submenu {
-    display: none;
-padding-left: 20px;
+.card h6, .card p {
+    margin: 0;
 }
 
-.nav-link.active .submenu {
-    display: block;
+.card p {
+    font-size: 1.2em;
+    color: #333; /* Warna teks */
+}
+
+.card i {
+    font-size: 1.5em; /* Atur ukuran ikon */
+    border-radius: 60%; /* Membuat elemen menjadi lingkaran */
+    width: 60px; /* Atur lebar lingkaran */
+    height: 60px; /* Atur tinggi lingkaran */
+    display: flex;
+    align-items: center; /* Pusatkan ikon secara vertikal */
+    justify-content: center; /* Pusatkan ikon secara horizontal */
+    background: transparent; /* Transparan */
+    border: 3px solid; /* Border warna sesuai strip */
+}
+
+.card-tipe i {
+    color: #4CAF50; /* Warna ikon hijau */
+    border-color: #4CAF50; /* Warna border hijau */
+}
+
+.card-stok i {
+    color: #2196F3; /* Warna ikon biru */
+    border-color: #2196F3; /* Warna border biru */
+}
+
+.card-merek i {
+    color: #FFC107; /* Warna ikon kuning */
+    border-color: #FFC107; /* Warna border kuning */
+}
+
+.card-polis i {
+    color: #F44336; /* Warna ikon merah */
+    border-color: #F44336; /* Warna border merah */
+}
+
+/* Strips warna */
+.card::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 5px;
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
+}
+
+.card-tipe::before {
+    background-color: #4CAF50; /* Hijau */
+}
+
+.card-stok::before {
+    background-color: #2196F3; /* Biru */
+}
+
+.card-merek::before {
+    background-color: #FFC107; /* Kuning */
+}
+
+.card-polis::before {
+    background-color: #F44336; /* Merah */
+}
+
+.card-tipe {
+    color: #4CAF50; /* Hijau */
+}
+
+.card-stok {
+    color: #2196F3; /* Biru */
+}
+
+.card-merek {
+    color: #FFC107; /* Kuning */
+}
+
+.card-polis {
+    color: #F44336; /* Merah */
 }

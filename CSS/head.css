@@ -1,0 +1,7 @@
+.zoomable{
+    height:55px;
+}
+.zoomable:hover{
+    transform:scale(2.5);
+    transition: 0.3s ease;
+}
