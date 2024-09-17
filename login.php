@@ -38,9 +38,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
+    <title>Login</title>    
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/lat_hrd/css/login.css">
+    <link rel="stylesheet" href="/LAT_HRD/CSS/login.css">
 </head>
 <body>
     <div class="login-container">
@@ -59,7 +59,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <?php if (isset($error)) echo '<div class="error">' . $error . '</div>'; ?>
             </form>
         </div>
-        <?php include 'register.php';?>
+        <div class="register-button">
+            <a href="register.php" class="btn btn-link">Register</a>
+        </div>
     </div>
 </body>
 </html>
