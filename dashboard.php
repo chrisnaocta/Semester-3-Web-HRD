@@ -7,7 +7,7 @@ if (!isset($_SESSION['user'])) {
 }
 // Mendapatkan informasi pengguna
 $user = $_SESSION['user'];
-include('header.php');
+include('head.php');
 include('sidebar.php');
 ?>
 

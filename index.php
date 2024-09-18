@@ -28,8 +28,8 @@ $stmt->close();
 <?php require 'head.php'; ?>
 <div class="wrapper">
     <header>
-        <h4><?php echo htmlspecialchars($namaUsaha ?? ''); ?></h4>
-        <p><?php echo htmlspecialchars($alamatUsaha ?? ''); ?></p>
+        <h4 style="text-align:center;"><?php echo htmlspecialchars($namaUsaha ?? ''); ?></h4>
+        <p style="text-align:center;"><?php echo htmlspecialchars($alamatUsaha ?? ''); ?></p>
     </header>
 
 

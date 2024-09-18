@@ -6,7 +6,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
     $iddep = $_POST['iddep'];
     $departemen = $_POST['departemen'];
 
-    $stmt = $conn->prepare("INSERT INTO departemen (iddep, departemen) VALUES (?,?");
+    $stmt = $conn->prepare("INSERT INTO departemen (iddep, departemen) VALUES (?,?)");
     $stmt->bind_param("ss", $iddep, $departemen);
 
     if($stmt->execute()){

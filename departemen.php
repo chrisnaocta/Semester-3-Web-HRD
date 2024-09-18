@@ -48,8 +48,8 @@ if (isset($_SESSION['message'])) {
 <?php require 'head.php'; ?>
 <div class="wrapper">
     <header>
-        <h4><?php echo htmlspecialchars($namaUsaha ?? ''); ?></h4>
-        <p><?php echo htmlspecialchars($alamatUsaha ?? ''); ?></p>
+        <h4 style="text-align:center;"><?php echo htmlspecialchars($namaUsaha ?? ''); ?></h4>
+        <p style="text-align:center;"><?php echo htmlspecialchars($alamatUsaha ?? ''); ?></p>
     </header>
 
     <?php include 'sidebar.php'; ?>
@@ -87,7 +87,14 @@ if (isset($_SESSION['message'])) {
                                         echo "<td>" . htmlspecialchars($departemen['departemen']) . "</td>";
                                         echo "<td class='text-center'>";
                                         echo "<div class='d-flex justify-content-center'>";
-                                        echo "<button class='btn btn-warning btn-sm edit-btn mr-1' data-bs-toggle='modal' data-bs-target='#editdepartemenModal' data-id='" . htmlspecialchars($departemen['iddep']) . "' data-name='" . htmlspecialchars($departemen['departemen']) .  "'><i class='fas fa-edit'></i> Edit</button>";
+                                        echo "<button
+                                        class='btn btn-warning btn-sm edit-btn mr-1'
+                                        data-bs-toggle='modal'
+                                        data-bs-target='#editdepartemenModal'
+                                        data-id='" . htmlspecialchars($departemen['iddep']) . "'
+                                        data-name='" . htmlspecialchars($departemen['departemen']) .  "'>
+                                        <i class='fas fa-edit'></i> Edit
+                                        </button>";
                                         echo "<button class='btn btn-danger btn-sm delete-btn' data-id='" . htmlspecialchars($departemen['iddep']) . "'><i class='fas fa-trash'></i> Delete</button>";
                                         echo "</div>";
                                         echo "</td>";
@@ -160,8 +167,8 @@ if (isset($_SESSION['message'])) {
 <!-- Bootstrap JavaScript -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 <!-- jQuery -->
-
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 <!-- DataTables -->
 <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
