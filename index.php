@@ -111,10 +111,10 @@ $stmt->close();
             </div>
 
             <!-- Full-width card for Aplikasi Kepegawaian -->
-            <div class="full-width-card">
+            <div class="full-width-card">`
                 <div class="card w-100">
                     <div class="card-header"><strong>Aplikasi Kepegawaian</strong></div>
-                    <img src="/LAT_HRD/foto/hrd_gambar.jpg" class="img-fluid" style="display:block; margin:auto;">
+                    <img src="/LAT_HRD/gambar/hrd_gambar.jpg" class="img-fluid" style="display:block; margin:auto;">
                 </div>
             </div>
         </div>

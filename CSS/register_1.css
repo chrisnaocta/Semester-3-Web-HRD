@@ -10,7 +10,7 @@
     text-align: left;
     width: 100%;
     max-width: 400px;
-    height: 350px;
+    height: 455px;
 }
 
 .input-group .icon {
@@ -34,8 +34,29 @@
     border-radius: 5px;
 }
 
+/* For error message */
 .error_message1 {
     color: #ff0000; /* Bootstrap's red color for error messages */
     text-align: center; /* Center align text */
     margin-top: -25px;
+}
+
+
+/* For password toogle icon */
+.input-group{
+    position: relative;
+}
+
+.password-toggle-icon {
+    position: absolute;
+    right: 20px;  /* Adjust this value to move the icon horizontally */
+    top: 50%;
+    transform: translateY(-50%); /* Vertically center the icon */
+    cursor: pointer;
+    color: #333;  /* Adjust the color as needed */
+    z-index: 1; /* Make sure the icon appears above the input field */
+}
+
+.form-control {
+    padding-right: 40px; /* Add padding so that the text doesn't overlap with the eye icon */
 }

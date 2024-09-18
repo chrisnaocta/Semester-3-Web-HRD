@@ -3,30 +3,37 @@ session_start();
 require 'config.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $email = $_POST['email'];
     $username = $_POST['username'];
+    $password = $_POST['password'];
 
     // Menggunakan prepared statement untuk mencegah SQL injection
-    $stmt = $conn->prepare("SELECT iduser, email, username FROM login WHERE email = ? AND username = ?");
-    $stmt->bind_param("ss", $email, $username);
+    $stmt = $conn->prepare("SELECT iduser, username, password FROM login WHERE username = ?");
+    $stmt->bind_param("s", $username);
     $stmt->execute();
     $stmt->store_result();
 
     if ($stmt->num_rows > 0) {
         // Bind hasil
-        $stmt->bind_result($iduser, $db_email, $db_username);
+        //Menyimpan data dari database ke variabel
+        // iduser di variabel $iduser, username di $db_username, password di $db_password
+        $stmt->bind_result($iduser, $db_username, $db_password);
         $stmt->fetch();
 
-        // Jika email dan username cocok
-        if ($email == $db_email && $username == $db_username) {
-            $_SESSION['iduser'] = $iduser;
-            header("Location: index.php");
-            exit();
-        } else {
+         // Verify if the username fetched matches the input username
+        if ($username == $db_username){
+            //Verify the password
+            if (password_verify($password, $db_password)){
+                $_SESSION['iduser'] = $iduser;
+                header("Location: index.php");
+                exit(); 
+            }else{
+                $error = "Password salah.";
+            }
+        }else{
             $error = "username salah.";
         }
     } else {
-        $error = "Email tidak ditemukan.";
+        $error = "Username tidak ditemukan.";
     }
 
     $stmt->close();
@@ -41,6 +48,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <title>Login</title>    
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/LAT_HRD/CSS/login.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
     <div class="login-container">
@@ -48,12 +56,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <h2>Login</h2>
             <form method="post" action="">
                 <div class="input-group">
-                    <span class="icon">&#9993;</span>
-                    <input type="email" id="email" name="email" placeholder="Email" required>
+                    <span class="icon"><i class="fas fa-user"></i></span>
+                    <input type="text" id="username" name="username" placeholder="Username" required>
                 </div>
                 <div class="input-group">
                     <span class="icon">&#128274;</span>
-                    <input type="username" id="username" name="username" placeholder="username" required>
+                    <input type="password" id="password" name="password" placeholder="Password" required>
                 </div>
                 <button type="submit">Login</button>
                 <?php if (isset($error)) echo '<div class="error">' . $error . '</div>'; ?>

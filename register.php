@@ -10,6 +10,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = $_POST['email'];
     $username = $_POST['username'];
     $code = $_POST['code'];
+    $password = $_POST['password'];
+    $confirm_pwd = $_POST['confirm_password'];
+
+    if ($password !== $confirm_pwd) {
+        $_SESSION['error'] = 'Password do not match!';
+        header("Location: register.php");
+        exit();
+    }
+
+    // Hash the password
+    $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
     // Expected code value
     $expected_code = '3223';
@@ -38,8 +49,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt->close();
 
         // Menggunakan prepared statement untuk mencegah SQL injection
-        $stmt = $conn->prepare("INSERT INTO login (email, username) VALUES (?, ?)");
-        $stmt->bind_param("ss", $email, $username);
+        $stmt = $conn->prepare("INSERT INTO login (email, username, password) VALUES (?, ?, ?)");
+        $stmt->bind_param("sss", $email, $username, $hashed_password);
 
         if ($stmt->execute()) {
             // Get the auto-generated iduser
@@ -72,8 +83,12 @@ $conn->close();
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
 
-    <link rel="stylesheet" href="/LAT_HRD/CSS/register.css">
+    <link rel="stylesheet" href="/LAT_HRD/CSS/register_1.css">
     <link rel="stylesheet" href="/LAT_HRD/CSS/register_2.css">
+
+    <style>
+        
+    </style>
 
 </head>
 <body>
@@ -110,6 +125,22 @@ $conn->close();
                     <input type="text" name="username" id="username" class="form-control" placeholder="Username" required>
                 </div>
             </div>
+
+            <div class="form-group row">
+                <div class="input-group">
+                    <span class="icon"><h5><i class="fas fa-lock"></i></h5></span>
+                    <input type="password" name="password" id="password" class="form-control" placeholder="Password" minlength="8" required>
+                    <span class="password-toggle-icon"><i class="fas fa-eye" id="togglePassword"></i></span>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <div class="input-group">
+                    <span class="icon"><h5><i class="fas fa-lock"></i></h5></span>
+                    <input type="password" name="confirm_password" id="confirm_password" class="form-control" placeholder="Confirm Password" required>
+                    <span class="password-toggle-icon"><i class="fas fa-eye" id="toggleConfirmPassword"></i></span>
+                </div>
+            </div>
             
             <div class="form-group row">
                 <div class="input-group">
@@ -138,4 +169,38 @@ $conn->close();
     </div>
 
 </body>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+            const passwordField = document.getElementById("password");
+            const confirmPasswordField = document.getElementById("confirm_password");
+            const togglePassword = document.getElementById("togglePassword");
+            const toggleConfirmPassword = document.getElementById("toggleConfirmPassword");
+
+            togglePassword.addEventListener("click", function () {
+              if (passwordField.type === "password") {
+                passwordField.type = "text";
+                togglePassword.classList.remove("fa-eye");
+                togglePassword.classList.add("fa-eye-slash");
+              } else {
+                passwordField.type = "password";
+                togglePassword.classList.remove("fa-eye-slash");
+                togglePassword.classList.add("fa-eye");
+              }
+            });
+
+            toggleConfirmPassword.addEventListener("click", function () {
+              if (confirmPasswordField.type === "password") {
+                confirmPasswordField.type = "text";
+                toggleConfirmPassword.classList.remove("fa-eye");
+                toggleConfirmPassword.classList.add("fa-eye-slash");
+              } else {
+                confirmPasswordField.type = "password";
+                toggleConfirmPassword.classList.remove("fa-eye-slash");
+                toggleConfirmPassword.classList.add("fa-eye");
+              }
+            });
+          });
+</script>
+
 </html>
