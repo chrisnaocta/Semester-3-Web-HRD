@@ -1,11 +1,7 @@
 <?php
 session_start();
 require 'config.php';
-
-if (!isset($_SESSION['iduser'])) {
-    header("Location: login.php");
-    exit();
-}
+require 'login_session.php';
 
 $iduser = $_SESSION['iduser'];
 
