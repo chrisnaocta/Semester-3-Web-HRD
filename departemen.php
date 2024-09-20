@@ -49,12 +49,14 @@ if (isset($_SESSION['message'])) {
         <p style="text-align:center;"><?php echo htmlspecialchars($alamatUsaha ?? ''); ?></p>
     </header>
 
+    <link rel="stylesheet" href="/LAT_HRD/CSS/departemen.css">
+
     <?php include 'sidebar.php'; ?>
     <div class="content" id="content">
         <div class="container-fluid mt-3">
             <div class="row">
                 <div class="col-md-12 d-flex justify-content-between align-items-center">
-                    <h4>Departemen</h4>
+                    <h4 style="margin-left: 15px;" >Departemen</h4>
                     <div>
                         <button type="button" class="btn btn-primary mb-3 mr-2" data-bs-toggle="modal" data-bs-target="#adddepartemenModal"><i class='fas fa-plus'></i> Add </button>
                         <button type="button" class="btn btn-secondary mb-3" id="printButton"><i class='fas fa-print'></i> Print</button>
@@ -63,7 +65,7 @@ if (isset($_SESSION['message'])) {
             </div>
             <div class="row">
                 <div class="col-md-12">
-                    <div class="table-responsive">
+                    <div class="table-responsive tabeldepartemen">
                         <table id="departemenTable" class="table table-bordered table-striped table-hover">    
                             <thead class="text-center">
                                 <tr>
@@ -73,16 +75,16 @@ if (isset($_SESSION['message'])) {
                                     <th>Aksi</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody class="text-center">
                                 <?php
                                     if ($departemen && $departemen->num_rows > 0) {
                                     $no = 1;
                                     foreach ($departemen as $row): ?>
                                         <tr>
-                                            <td class="text-center"> <?php echo $no++; ?> </td>
-                                            <td class="text-center"> <?php echo htmlspecialchars($row['iddep']); ?> </td>
+                                            <td> <?php echo $no++; ?> </td>
+                                            <td> <?php echo htmlspecialchars($row['iddep']); ?> </td>
                                             <td> <?php echo htmlspecialchars($row['departemen']); ?> </td>
-                                            <td class="text-center">
+                                            <td>
                                                 <div class="d-flex justify-content-center">
                                                     <button class="btn btn-warning btn-sm edit-btn mr-1"
                                                             data-bs-toggle="modal"
@@ -100,7 +102,7 @@ if (isset($_SESSION['message'])) {
                                         </tr>
                                         <?php endforeach; // Close the foreach loop ?>
                                         <?php } else { ?>
-                                            <tr><td colspan="6" class="text-center">No data found</td></tr>
+                                            <tr><td colspan="6">No data found</td></tr>
                                 <?php } ?>
                             </tbody>
                         </table>
