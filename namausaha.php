@@ -2,6 +2,10 @@
 session_start();
 require 'config.php';
 require 'login_session.php';
+require 'read_namausaha.php';
+
+// Ambil data dari tabel namausaha
+$usaha = query("SELECT * FROM namausaha");
 
 $iduser = $_SESSION['iduser'];
 
@@ -21,7 +25,7 @@ $stmt->fetch();
 $stmt->close();
 
 // Ambil data dari tabel namausaha
-$result = mysqli_query($conn, "SELECT * FROM namausaha");
+// $result = mysqli_query($conn, "SELECT * FROM namausaha");
 
 // Dapatkan nomor urut terbaru untuk iddep baru
 $stmt = $conn->query("SELECT idusaha FROM namausaha ORDER BY idusaha DESC LIMIT 1");
@@ -77,7 +81,7 @@ if (isset($_SESSION['message'])) {
                             <thead class="text-center table-primary" >
                                 <tr>
                                     <th style="width: 1px;">No</th> 
-                                    <th style="width: 5%;">Id</th>
+                                    <th style="width: 1%;">Id</th>
                                     <th>Nama Usaha</th>
                                     <th>Alamat</th>
                                     <th>No Telepon</th>
@@ -93,7 +97,7 @@ if (isset($_SESSION['message'])) {
                             </thead>
                             <tbody class="text-center">
                                 <?php $no = 1;
-                                while ($row = mysqli_fetch_assoc($result)) :
+                                foreach($usaha as $row):
                                 ?>
                                     <tr>
                                         <td> <?php echo $no++; ?> </td>
@@ -127,7 +131,7 @@ if (isset($_SESSION['message'])) {
                                         </button>
                                         </td>
                                     </tr>
-                                    <?php endwhile; ?>
+                                    <?php endforeach; ?>
                             </tbody>
                         </table>
                     </div>
@@ -153,44 +157,52 @@ if (isset($_SESSION['message'])) {
                         <input type="text" class="form-control" id="idusaha" name="idusaha" value="<?php echo htmlspecialchars($newidusaha); ?>" readonly>
                     </div>
                     <div class="mb-3">
-                        <label for="edit_nama" class="form-label">Nama Usaha</label>
-                        <input type="text" class="form-control" id="edit_nama" name="nama" required>
+                        <label for="add_nama" class="form-label">Nama Usaha</label>
+                        <input type="text" class="form-control" id="add_nama" name="nama" required>
                     </div>
                     <div class="mb-3">
-                        <label for="edit_alamat" class="form-label">Alamat</label>
-                        <input type="text" class="form-control" id="edit_alamat" name="alamat"required>
+                        <label for="add_alamat" class="form-label">Alamat</label>
+                        <input type="text" class="form-control" id="add_alamat" name="alamat"required>
                     </div>
                     <div class="mb-3">
-                        <label for="edit_notelepon" class="form-label">No Telepon</label>
-                        <input type="text" class="form-control" id="edit_notelepon" name="notelepon"required>
+                        <label for="add_notelepon" class="form-label">No Telepon</label>
+                        <input type="text" class="form-control" id="add_notelepon" minlength="10" maxlength="12" name="notelepon"required>
                     </div>
                     <div class="mb-3">
-                        <label for="edit_fax" class="form-label">Fax</label>
-                        <input type="text" class="form-control" id="edit_fax" name="fax"required>
+                        <label for="add_fax" class="form-label">Fax</label>
+                        <input type="text" class="form-control" id="add_fax" minlength="7" maxlength="8" name="fax"required>
                     </div>
                     <div class="mb-3">
-                        <label for="edit_email" class="form-label">Email</label>
-                        <input type="email" class="form-control" id="edit_email" name="email"required>
+                        <label for="add_email" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="add_email" name="email"required>
                     </div>
                     <div class="mb-3">
-                        <label for="edit_npwp" class="form-label">NPWP</label>
-                        <input type="text" class="form-control" id="edit_npwp" name="npwp"required>
+                        <label for="add_npwp" class="form-label">NPWP</label>
+                        <input type="text" class="form-control" id="add_npwp" minlength="16" maxlength="16" name="npwp"required>
                     </div>
                     <div class="mb-3">
-                        <label for="edit_bank" class="form-label">Bank</label>
-                        <input type="text" class="form-control" id="edit_bank" name="bank"required>
+                        <label for="add_bank" class="form-label">Bank</label>
+                        <select class="form-control" id="add_bank" name="bank" required>
+                            <option value="" disabled selected>Select a bank</option>
+                            <option>BCA</option>
+                            <option>BRI</option>
+                            <option>BNI</option>
+                            <option>Mandiri</option>
+                            <option>BTN</option>
+                            <option>MEGA</option>
+                        </select>
                     </div>
                     <div class="mb-3">
-                        <label for="edit_noaccount" class="form-label">No Account</label>
-                        <input type="text" class="form-control" id="edit_noaccount" name="noaccount"required>
+                        <label for="add_noaccount" class="form-label">No Account</label>
+                        <input type="text" class="form-control" id="add_noaccount" minlength="10" maxlength="15" name="noaccount"required>
                     </div>
                     <div class="mb-3">
-                        <label for="edit_atasnama" class="form-label">Atas Nama</label>
-                        <input type="text" class="form-control" id="edit_atasnama" name="atasnama"required>
+                        <label for="add_atasnama" class="form-label">Atas Nama</label>
+                        <input type="text" class="form-control" id="add_atasnama" name="atasnama" required>
                     </div>
                     <div class="mb-3">
-                        <label for="edit_pimpinan" class="form-label">Pimpinan</label>
-                        <input type="text" class="form-control" id="edit_pimpinan" name="pimpinan"required>
+                        <label for="add_pimpinan" class="form-label">Pimpinan</label>
+                        <input type="text" class="form-control" id="add_pimpinan" name="pimpinan" required>
                     </div>
                     <button type="submit" class="btn btn-primary">Add</button>
                 </form>
@@ -198,6 +210,23 @@ if (isset($_SESSION['message'])) {
         </div>
     </div>
 </div>
+
+<script>
+    // Function to prevent entering numbers in input
+    document.querySelectorAll('input[id="add_pimpinan"] , input[id="add_atasnama"]').forEach(function(inputField) {
+        inputField.addEventListener('input', function(e) {
+            // Remove any non-letter characters (numbers, symbols, etc.) as the user types
+            this.value = this.value.replace(/[^a-zA-Z\s]/g, '');
+        });
+    });
+
+    document.querySelectorAll('input[id="add_notelepon"], input[id="add_fax"], input[id="add_npwp"], input[id="add_noaccount"]').forEach(function(inputField) {
+        inputField.addEventListener('input', function(e) {
+            // Replace any non-digit characters with an empty string
+            this.value = this.value.replace(/[^0-9]/g, '');
+        });
+    });
+</script>
 
 <!-- Modal Edit Usaha -->
 <div class="modal fade" id="editusaha" tabindex="-1" aria-labelledby="editusahaModalLabel" aria-hidden="true">
@@ -239,7 +268,15 @@ if (isset($_SESSION['message'])) {
                     </div>
                     <div class="mb-3">
                         <label for="edit_bank" class="form-label">Bank</label>
-                        <input type="text" class="form-control" id="edit_bank" name="bank">
+                        <select class="form-control" id="edit_bank" name="bank">
+                            <option value="" disabled selected>Select a bank</option>
+                            <option>BCA</option>
+                            <option>BRI</option>
+                            <option>BNI</option>
+                            <option>Mandiri</option>
+                            <option>BTN</option>
+                            <option>MEGA</option>
+                        </select>
                     </div>
                     <div class="mb-3">
                         <label for="edit_noaccount" class="form-label">No Account</label>
@@ -259,6 +296,23 @@ if (isset($_SESSION['message'])) {
         </div>
     </div>
 </div>
+
+<script>
+    // Function to prevent entering numbers in input
+    document.querySelectorAll('input[id="edit_pimpinan"] , input[id="edit_atasnama"]').forEach(function(inputField) {
+        inputField.addEventListener('input', function(e) {
+            // Remove any non-letter characters (numbers, symbols, etc.) as the user types
+            this.value = this.value.replace(/[^a-zA-Z\s]/g, '');
+        });
+    });
+
+    document.querySelectorAll('input[id="edit_notelepon"], input[id="edit_fax"], input[id="edit_npwp"], input[id="edit_noaccount"]').forEach(function(inputField) {
+        inputField.addEventListener('input', function(e) {
+            // Replace any non-digit characters with an empty string
+            this.value = this.value.replace(/[^0-9]/g, '');
+        });
+    });
+</script>
 
 <script>
 
