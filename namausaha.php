@@ -5,7 +5,7 @@ require 'login_session.php';
 require 'read_namausaha.php';
 
 // Ambil data dari tabel namausaha
-$usaha = query("SELECT * FROM namausaha");
+$usaha = $conn->query("SELECT * FROM namausaha");
 
 $iduser = $_SESSION['iduser'];
 
@@ -24,10 +24,7 @@ $stmt->bind_result($namaUsaha, $alamatUsaha);
 $stmt->fetch();
 $stmt->close();
 
-// Ambil data dari tabel namausaha
-// $result = mysqli_query($conn, "SELECT * FROM namausaha");
-
-// Dapatkan nomor urut terbaru untuk iddep baru
+// Dapatkan nomor urut terbaru untuk idusaha baru
 $stmt = $conn->query("SELECT idusaha FROM namausaha ORDER BY idusaha DESC LIMIT 1");
 $latestidusaha= $stmt->fetch_assoc();
 $urut = 1;
@@ -96,42 +93,46 @@ if (isset($_SESSION['message'])) {
                                 </tr>
                             </thead>
                             <tbody class="text-center">
-                                <?php $no = 1;
-                                foreach($usaha as $row):
-                                ?>
-                                    <tr>
-                                        <td> <?php echo $no++; ?> </td>
-                                        <td> <?php echo $row["idusaha"]; ?> </td>
-                                        <td> <?php echo $row["nama"]; ?> </td>
-                                        <td> <?php echo $row["alamat"]; ?> </td>
-                                        <td> <?php echo $row["notelepon"]; ?> </td>
-                                        <td> <?php echo $row["fax"]; ?> </td>
-                                        <td> <?php echo $row["email"]; ?> </td>
-                                        <td> <?php echo $row["npwp"]; ?> </td>
-                                        <td> <?php echo $row["bank"]; ?> </td>
-                                        <td> <?php echo $row["noaccount"]; ?> </td>
-                                        <td> <?php echo $row["atasnama"]; ?> </td>
-                                        <td> <?php echo $row["pimpinan"]; ?> </td>
-                                        <td>
-                                        <button class='btn btn-warning btn-sm edit-btn mr-1' 
-                                                data-bs-toggle='modal' 
-                                                data-bs-target='#editusaha'
-                                                data-idusaha='<?php echo htmlspecialchars($row['idusaha']); ?>'
-                                                data-nama='<?php echo htmlspecialchars($row['nama']); ?>'
-                                                data-alamat='<?php echo htmlspecialchars($row['alamat']); ?>'
-                                                data-notelepon='<?php echo htmlspecialchars($row['notelepon']); ?>'
-                                                data-fax='<?php echo htmlspecialchars($row['fax']); ?>'
-                                                data-email='<?php echo htmlspecialchars($row['email']); ?>'
-                                                data-npwp='<?php echo htmlspecialchars($row['npwp']); ?>'
-                                                data-bank='<?php echo htmlspecialchars($row['bank']); ?>'
-                                                data-noaccount='<?php echo htmlspecialchars($row['noaccount']); ?>'
-                                                data-atasnama='<?php echo htmlspecialchars($row['atasnama']); ?>'
-                                                data-pimpinan='<?php echo htmlspecialchars($row['pimpinan']); ?>'>
-                                            <i class='fas fa-edit'></i> Edit
-                                        </button>
-                                        </td>
-                                    </tr>
-                                    <?php endforeach; ?>
+                                <?php
+                                    if ($usaha && $usaha->num_rows > 0) {
+                                    $no = 1;
+                                    foreach($usaha as $row): ?>
+                                        <tr>
+                                            <td> <?php echo $no++; ?> </td>
+                                            <td> <?php echo $row["idusaha"]; ?> </td>
+                                            <td> <?php echo $row["nama"]; ?> </td>
+                                            <td> <?php echo $row["alamat"]; ?> </td>
+                                            <td> <?php echo $row["notelepon"]; ?> </td>
+                                            <td> <?php echo $row["fax"]; ?> </td>
+                                            <td> <?php echo $row["email"]; ?> </td>
+                                            <td> <?php echo $row["npwp"]; ?> </td>
+                                            <td> <?php echo $row["bank"]; ?> </td>
+                                            <td> <?php echo $row["noaccount"]; ?> </td>
+                                            <td> <?php echo $row["atasnama"]; ?> </td>
+                                            <td> <?php echo $row["pimpinan"]; ?> </td>
+                                            <td>
+                                            <button class='btn btn-warning btn-sm edit-btn mr-1' 
+                                                    data-bs-toggle='modal' 
+                                                    data-bs-target='#editusaha'
+                                                    data-idusaha='<?php echo htmlspecialchars($row['idusaha']); ?>'
+                                                    data-nama='<?php echo htmlspecialchars($row['nama']); ?>'
+                                                    data-alamat='<?php echo htmlspecialchars($row['alamat']); ?>'
+                                                    data-notelepon='<?php echo htmlspecialchars($row['notelepon']); ?>'
+                                                    data-fax='<?php echo htmlspecialchars($row['fax']); ?>'
+                                                    data-email='<?php echo htmlspecialchars($row['email']); ?>'
+                                                    data-npwp='<?php echo htmlspecialchars($row['npwp']); ?>'
+                                                    data-bank='<?php echo htmlspecialchars($row['bank']); ?>'
+                                                    data-noaccount='<?php echo htmlspecialchars($row['noaccount']); ?>'
+                                                    data-atasnama='<?php echo htmlspecialchars($row['atasnama']); ?>'
+                                                    data-pimpinan='<?php echo htmlspecialchars($row['pimpinan']); ?>'>
+                                                <i class='fas fa-edit'></i> Edit
+                                            </button>
+                                            </td>
+                                        </tr>
+                                        <?php endforeach ?>
+                                        <?php } else { ?>
+                                            <tr><td colspan="6" class="text-center">No data found</td></tr>
+                                <?php } ?>
                             </tbody>
                         </table>
                     </div>

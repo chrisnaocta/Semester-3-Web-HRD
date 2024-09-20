@@ -2,6 +2,10 @@
 session_start();
 require 'config.php';
 require 'login_session.php';
+require 'read_departemen.php';
+
+// Ambil data dari tabel departemen
+$departemen = $conn->query("SELECT * FROM departemen");
 
 $iduser = $_SESSION['iduser'];
 
@@ -19,9 +23,6 @@ $stmt->execute();
 $stmt->bind_result($namaUsaha, $alamatUsaha);
 $stmt->fetch();
 $stmt->close();
-
-// Ambil data dari tabel departemen
-$result = $conn->query("SELECT * FROM departemen");
 
 // Dapatkan nomor urut terbaru untuk iddep baru
 $stmt = $conn->query("SELECT iddep FROM departemen ORDER BY iddep DESC LIMIT 1");
@@ -73,33 +74,34 @@ if (isset($_SESSION['message'])) {
                                 </tr>
                             </thead>
                             <tbody>
-                            <?php
-                                if ($result && $result->num_rows > 0) {
+                                <?php
+                                    if ($departemen && $departemen->num_rows > 0) {
                                     $no = 1;
-                                    while ($departemen = $result->fetch_assoc()) {
-                                        echo "<tr>";
-                                        echo "<td class='text-center'>" . $no++ . "</td>";
-                                        echo "<td class='text-center'>" . htmlspecialchars($departemen['iddep']) . "</td>";
-                                        echo "<td>" . htmlspecialchars($departemen['departemen']) . "</td>";
-                                        echo "<td class='text-center'>";
-                                        echo "<div class='d-flex justify-content-center'>";
-                                        echo "<button
-                                        class='btn btn-warning btn-sm edit-btn mr-1'
-                                        data-bs-toggle='modal'
-                                        data-bs-target='#editdepartemenModal'
-                                        data-id='" . htmlspecialchars($departemen['iddep']) . "'
-                                        data-name='" . htmlspecialchars($departemen['departemen']) .  "'>
-                                        <i class='fas fa-edit'></i> Edit
-                                        </button>";
-                                        echo "<button class='btn btn-danger btn-sm delete-btn' data-id='" . htmlspecialchars($departemen['iddep']) . "'><i class='fas fa-trash'></i> Delete</button>";
-                                        echo "</div>";
-                                        echo "</td>";
-                                        echo "</tr>";
-                                    }
-                                } else {
-                                    echo "<tr><td colspan='6' class='text-center'>No data found</td></tr>";
-                                }
-                                ?>
+                                    foreach ($departemen as $row): ?>
+                                        <tr>
+                                            <td class="text-center"> <?php echo $no++; ?> </td>
+                                            <td class="text-center"> <?php echo htmlspecialchars($row['iddep']); ?> </td>
+                                            <td> <?php echo htmlspecialchars($row['departemen']); ?> </td>
+                                            <td class="text-center">
+                                                <div class="d-flex justify-content-center">
+                                                    <button class="btn btn-warning btn-sm edit-btn mr-1"
+                                                            data-bs-toggle="modal"
+                                                            data-bs-target="#editdepartemenModal"
+                                                            data-id="<?php echo htmlspecialchars($row['iddep']); ?>"
+                                                            data-name="<?php echo htmlspecialchars($row['departemen']); ?>">
+                                                        <i class="fas fa-edit"></i> Edit
+                                                    </button>
+                                                    <button class="btn btn-danger btn-sm delete-btn"
+                                                            data-id="<?php echo htmlspecialchars($row['iddep']); ?>">
+                                                        <i class="fas fa-trash"></i> Delete
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <?php endforeach; // Close the foreach loop ?>
+                                        <?php } else { ?>
+                                            <tr><td colspan="6" class="text-center">No data found</td></tr>
+                                <?php } ?>
                             </tbody>
                         </table>
                     </div>
