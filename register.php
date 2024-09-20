@@ -1,7 +1,6 @@
 <?php
-session_start();
-require 'config.php';
 require 'user_session.php';
+require 'config.php';
 
 // Check if there's an error message in the session
 $error_message = isset($_SESSION['error']) ? $_SESSION['error'] : '';
