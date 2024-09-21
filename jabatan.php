@@ -35,7 +35,7 @@ if ($latestidjab) {
     $latestNumber = (int) substr($latestidjab['idjab'], 1);
     $urut = $latestNumber + 1;
 }
-$newidjab = 'D' . str_pad($urut, 3, '0', STR_PAD_LEFT);
+$newidjab = 'J' . str_pad($urut, 3, '0', STR_PAD_LEFT);
 
 // Simpan pesan ke variabel dan hapus dari session
 $message = null;
