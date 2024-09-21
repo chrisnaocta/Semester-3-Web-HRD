@@ -48,13 +48,13 @@ if (isset($_SESSION['message'])) {
 <?php require 'head.php'; ?>
 <div class="wrapper">
     <header>
-        <h4><?php echo htmlspecialchars($namaUsaha); ?></h4>
-        <p><?php echo htmlspecialchars($alamatUsaha); ?></p>
+        <h4 style="text-align:center;"><?php echo htmlspecialchars($namaUsaha ?? ''); ?></h4>
+        <p style="text-align:center;"><?php echo htmlspecialchars($alamatUsaha ?? ''); ?></p>
     </header>
 
     <?php include 'sidebar.php'; ?>
     <div class="content" id="content">
-        <div class="container-fluid mt-3">
+        <div class="container-fluid mt-3" style="margin-left:15px">
             <div class="row">
                 <div class="col-md-12 d-flex justify-content-between align-items-center">
                     <h4>Jabatan</h4>
@@ -80,7 +80,7 @@ if (isset($_SESSION['message'])) {
                                 <?php
                                 if ($result && $result->num_rows > 0) {
                                     $no = 1;
-                                    while ($jabatan = $result->fetch_assoc()) {
+                                    foreach($result as $jabatan) {
                                         echo "<tr>";
                                         echo "<td class='text-center'>" . $no++ . "</td>";
                                         echo "<td class='text-center'>" . htmlspecialchars($jabatan['idjab']) . "</td>";
