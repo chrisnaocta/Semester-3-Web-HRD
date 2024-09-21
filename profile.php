@@ -36,7 +36,7 @@ $stmt->close();
 
 <style>
     table th {
-        width: 200px;
+        width: 150px;
     }
 </style>
 
@@ -49,21 +49,12 @@ $stmt->close();
 
     <?php include 'sidebar.php'; ?>
     <div class="content" id="content">
-        <div class="container-fluid mt-3" style="margin-left:15px">
+        <div class="container-sm mt-3" style="margin-left:15px">
             <div class="row">
                 <div class="col-md-12 d-flex justify-content-between align-items-center">
                     <h4>Profile</h4>
-                    <button class='btn btn-warning btn-sm edit-btn mr-1' 
-                            data-bs-toggle='modal' 
-                            data-bs-target='#editprofileModal'
-                            data-iduser='<?php echo htmlspecialchars($iduser); ?>'
-                            data-username='<?php echo htmlspecialchars($username); ?>'
-                            data-email='<?php echo htmlspecialchars($email); ?>'
-                            >
-                        <i class='fas fa-edit'></i> Edit Profile Picture
-                    </button>
                 </div>
-                <div class="col-md-12 profile-table">
+                <div class="pt-3 col-md-8">
                     <table class="table table-bordered table-striped table-hover">
                         <tr>
                             <th>ID</th>
@@ -86,6 +77,19 @@ $stmt->close();
                             </td>
                         </tr>
                     </table>
+                </div>
+                <div class="pt-3 col-md">
+                </div>
+                <div>
+                <button class='btn btn-warning btn-sm edit-btn mr-1' 
+                        data-bs-toggle='modal' 
+                        data-bs-target='#editprofileModal'
+                        data-iduser='<?php echo htmlspecialchars($iduser); ?>'
+                        data-username='<?php echo htmlspecialchars($username); ?>'
+                        data-email='<?php echo htmlspecialchars($email); ?>'
+                        >
+                    <i class='fas fa-edit'></i> Edit Profile Picture
+                </button>
                 </div>
             </div>
         </div>
