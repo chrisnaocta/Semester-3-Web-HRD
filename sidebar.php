@@ -19,6 +19,7 @@
     </div>
     <ul>
         <li><a href="index.php"><span><i class="fas fa-home"></i> Home</span></a></li>
+        <li><a href="namausaha.php"><span><i class="fas fa-user"></i> Profile</span></a></li>
         <li><a href="namausaha.php"><span><i class="fas fa-building"></i> Identitas Usaha</span></a></li>
         <li>
             <a href="#" class="menu-toggle"><span><i class="fas fa-users"></i> Master</span><i class="fas fa-chevron-right arrow"></i></a>
