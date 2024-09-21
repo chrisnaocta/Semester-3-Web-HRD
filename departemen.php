@@ -10,10 +10,10 @@ $departemen = $conn->query("SELECT * FROM departemen");
 $iduser = $_SESSION['iduser'];
 
 // Ambil data user dari database
-$stmt = $conn->prepare("SELECT username, email FROM login WHERE iduser = ?");
+$stmt = $conn->prepare("SELECT username, foto FROM login WHERE iduser = ?");
 $stmt->bind_param("i", $iduser);
 $stmt->execute();
-$stmt->bind_result($username, $email);
+$stmt->bind_result($username, $foto);
 $stmt->fetch();
 $stmt->close();
 
