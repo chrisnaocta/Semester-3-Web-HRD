@@ -262,7 +262,7 @@ if (isset($_SESSION['message'])) {
 
             // Handle print button click
             $('#printButton').click(function() {
-                window.location.href = 'print_jabatan.php';
+                window.open ('print_jabatan.php', '_blank');
             });
         });
     });

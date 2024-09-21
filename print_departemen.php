@@ -44,7 +44,7 @@ $no = 1;
 while ($row = $result->fetch_assoc()){
     $pdf ->Cell(10, 10, $no++, 1, 0, 'C');
     $pdf ->Cell(40, 10, $row['iddep'], 1, 0, 'C');
-    $pdf ->Cell(140, 10, $row['deparemen'], 1, 1, 'L');
+    $pdf ->Cell(140, 10, $row['departemen'], 1, 1, 'L');
 }
 
 //Output PDF

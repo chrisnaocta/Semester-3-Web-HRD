@@ -271,7 +271,7 @@ if (isset($_SESSION['message'])) {
 
             // Handle print button click
             $('#printButton').click(function() {
-                window.location.href = 'print_departemen.php';
+                window.open ('print_departemen.php', '_blank');
             });
         });
     });
