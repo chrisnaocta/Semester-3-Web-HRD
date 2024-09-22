@@ -40,17 +40,12 @@ $message = null;
 if (isset($_SESSION['message'])) {
     $message = $_SESSION['message'];
     unset($_SESSION['message']);
-}
+} 
 ?>
 
 <!-- Bootstrap 5 source -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
-<!-- DataTables -->
-<script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
-
 
 <?php require 'head.php'; ?>
 <div class="wrapper">
@@ -111,22 +106,28 @@ if (isset($_SESSION['message'])) {
                                             <td> <?php echo $row["atasnama"]; ?> </td>
                                             <td> <?php echo $row["pimpinan"]; ?> </td>
                                             <td>
-                                            <button class='btn btn-warning btn-sm edit-btn mr-1' 
-                                                    data-bs-toggle='modal' 
-                                                    data-bs-target='#editusaha'
-                                                    data-idusaha='<?php echo htmlspecialchars($row['idusaha']); ?>'
-                                                    data-nama='<?php echo htmlspecialchars($row['nama']); ?>'
-                                                    data-alamat='<?php echo htmlspecialchars($row['alamat']); ?>'
-                                                    data-notelepon='<?php echo htmlspecialchars($row['notelepon']); ?>'
-                                                    data-fax='<?php echo htmlspecialchars($row['fax']); ?>'
-                                                    data-email='<?php echo htmlspecialchars($row['email']); ?>'
-                                                    data-npwp='<?php echo htmlspecialchars($row['npwp']); ?>'
-                                                    data-bank='<?php echo htmlspecialchars($row['bank']); ?>'
-                                                    data-noaccount='<?php echo htmlspecialchars($row['noaccount']); ?>'
-                                                    data-atasnama='<?php echo htmlspecialchars($row['atasnama']); ?>'
-                                                    data-pimpinan='<?php echo htmlspecialchars($row['pimpinan']); ?>'>
-                                                <i class='fas fa-edit'></i> Edit
-                                            </button>
+                                                <div class="d-flex justify-content-center">
+                                                    <button class='btn btn-warning btn-sm edit-btn mr-1' 
+                                                            data-bs-toggle='modal' 
+                                                            data-bs-target='#editusaha'
+                                                            data-idusaha='<?php echo htmlspecialchars($row['idusaha']); ?>'
+                                                            data-nama='<?php echo htmlspecialchars($row['nama']); ?>'
+                                                            data-alamat='<?php echo htmlspecialchars($row['alamat']); ?>'
+                                                            data-notelepon='<?php echo htmlspecialchars($row['notelepon']); ?>'
+                                                            data-fax='<?php echo htmlspecialchars($row['fax']); ?>'
+                                                            data-email='<?php echo htmlspecialchars($row['email']); ?>'
+                                                            data-npwp='<?php echo htmlspecialchars($row['npwp']); ?>'
+                                                            data-bank='<?php echo htmlspecialchars($row['bank']); ?>'
+                                                            data-noaccount='<?php echo htmlspecialchars($row['noaccount']); ?>'
+                                                            data-atasnama='<?php echo htmlspecialchars($row['atasnama']); ?>'
+                                                            data-pimpinan='<?php echo htmlspecialchars($row['pimpinan']); ?>'>
+                                                        <i class='fas fa-edit'></i> Edit
+                                                    </button>
+                                                    <button class="btn btn-danger btn-sm delete-btn"
+                                                                    data-id="<?php echo htmlspecialchars($row['idusaha']); ?>">
+                                                                <i class="fas fa-trash"></i> Delete
+                                                    </button>
+                                                </div>
                                             </td>
                                         </tr>
                                         <?php endforeach ?>
@@ -211,6 +212,14 @@ if (isset($_SESSION['message'])) {
         </div>
     </div>
 </div>
+
+<!-- Include jQuery first -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- Include Bootstrap and DataTables -->
+<script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
+
 
 <script>
     // Function to prevent entering numbers in input
@@ -316,46 +325,101 @@ if (isset($_SESSION['message'])) {
 </script>
 
 <script>
-
     // Show message if it exists in the session
     <?php if ($message): ?>
-            Swal.fire({
-                title: '<?php echo $message['type'] === 'success' ? 'Success!' : 'Error!'; ?>',
-                text: '<?php echo $message['text']; ?>',
-                icon: '<?php echo $message['type'] === 'success' ? 'success' : 'error'; ?>'
-            });
+        Swal.fire({
+            title: '<?php echo $message['type'] === 'success' ? 'Success!' : 'Error!'; ?>',
+            text: '<?php echo $message['text']; ?>',
+            icon: '<?php echo $message['type'] === 'success' ? 'success' : 'error'; ?>'
+        });
     <?php endif; ?>     
 
     document.addEventListener('DOMContentLoaded', function () {
-    // Add event listener to all edit buttons
-    document.querySelectorAll('.edit-btn').forEach(button => {
-        button.addEventListener('click', function () {
-            // Get data attributes from the button
-            const idusaha = this.getAttribute('data-idusaha');
-            const nama = this.getAttribute('data-nama');
-            const alamat = this.getAttribute('data-alamat');
-            const notelepon = this.getAttribute('data-notelepon');
-            const fax = this.getAttribute('data-fax');
-            const email = this.getAttribute('data-email');
-            const npwp = this.getAttribute('data-npwp');
-            const bank = this.getAttribute('data-bank');
-            const noaccount = this.getAttribute('data-noaccount');
-            const atasnama = this.getAttribute('data-atasnama');
-            const pimpinan = this.getAttribute('data-pimpinan');
+        // Add event listener to all edit buttons
+        document.querySelectorAll('.edit-btn').forEach(button => {
+            button.addEventListener('click', function () {
+                // Get data attributes from the button
+                const idusaha = this.getAttribute('data-idusaha');
+                const nama = this.getAttribute('data-nama');
+                const alamat = this.getAttribute('data-alamat');
+                const notelepon = this.getAttribute('data-notelepon');
+                const fax = this.getAttribute('data-fax');
+                const email = this.getAttribute('data-email');
+                const npwp = this.getAttribute('data-npwp');
+                const bank = this.getAttribute('data-bank');
+                const noaccount = this.getAttribute('data-noaccount');
+                const atasnama = this.getAttribute('data-atasnama');
+                const pimpinan = this.getAttribute('data-pimpinan');
 
-            // Set values in the modal
-            document.getElementById('edit_idusaha').value = idusaha;
-            document.getElementById('edit_nama').value = nama;
-            document.getElementById('edit_alamat').value = alamat;
-            document.getElementById('edit_notelepon').value = notelepon;
-            document.getElementById('edit_fax').value = fax;
-            document.getElementById('edit_email').value = email;
-            document.getElementById('edit_npwp').value = npwp;
-            document.getElementById('edit_bank').value = bank;
-            document.getElementById('edit_noaccount').value = noaccount;
-            document.getElementById('edit_atasnama').value = atasnama;
-            document.getElementById('edit_pimpinan').value = pimpinan;
+                // Set values in the modal
+                document.getElementById('edit_idusaha').value = idusaha;
+                document.getElementById('edit_nama').value = nama;
+                document.getElementById('edit_alamat').value = alamat;
+                document.getElementById('edit_notelepon').value = notelepon;
+                document.getElementById('edit_fax').value = fax;
+                document.getElementById('edit_email').value = email;
+                document.getElementById('edit_npwp').value = npwp;
+                document.getElementById('edit_bank').value = bank;
+                document.getElementById('edit_noaccount').value = noaccount;
+                document.getElementById('edit_atasnama').value = atasnama;
+                document.getElementById('edit_pimpinan').value = pimpinan;
+            });
         });
     });
-});
+
+    // Handle delete button click
+    $(document).on('click', '.delete-btn', function() {
+        var idusaha = $(this).data('id');
+        Swal.fire({
+            title: 'Are you sure?',
+            text: 'Apa benar data tersebut dihapus',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: 'delete_usaha.php',
+                    type: 'POST',
+                    data: { idusaha: idusaha },
+                    success: function(response) {
+                        console.log(response); // Debugging
+                        if (response.includes('Success')) {
+                            Swal.fire(
+                                'Deleted!',
+                                'Data berhasil dihapus.',
+                                'success'
+                            ).then(function() {
+                                location.reload();
+                            });
+                        } else {
+                            Swal.fire(
+                                'Error!',
+                                response,
+                                'error'
+                            );
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.log(xhr.responseText); // Debugging
+                        Swal.fire(
+                            'Error!',
+                            'An error occurred: ' + error,
+                            'error'
+                        );
+                    }
+                });
+            }
+        });
+    });
+
+    // Print ke PDF        
+    $(document).ready(function() {
+        // Handle print button click
+        $('#printButton').click(function() {
+            window.open('print_usaha.php', '_blank');
+        });
+    });
 </script>

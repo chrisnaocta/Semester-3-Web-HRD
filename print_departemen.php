@@ -25,7 +25,7 @@ $pdf -> AddPage();
 //Tambahkan kop dokumen
 $pdf -> SetFont('Arial','B', 16);
 $pdf -> Cell(0, 10, $namaUsaha, 0, 1, 'C');
-$pdf -> SetFont('Arial','', 1);
+$pdf -> SetFont('Arial','', 12);
 $pdf -> Cell(0, 10, $alamatUsaha, 0, 1, 'C');
 $pdf -> Ln(10);
 $pdf -> SetFont('Arial','B',14);

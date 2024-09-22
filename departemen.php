@@ -262,19 +262,15 @@ if (isset($_SESSION['message'])) {
                         }
                     });
                 }
-            });   
+            });
         });
 
-        //Print ke PDF        
-        $(document).ready(function() {
-            // Other existing scripts...
-
-            // Handle print button click
-            $('#printButton').click(function() {
-                window.open ('print_departemen.php', '_blank');
-            });
+        // Handle print button click
+        $('#printButton').click(function() {
+            window.open('print_departemen.php', '_blank');
         });
     });
 </script>
+
 </body>
 </html>
