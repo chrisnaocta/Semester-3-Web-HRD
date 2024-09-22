@@ -49,6 +49,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/LAT_HRD/CSS/login.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        .input-group .icon {
+            background: #e0e0e0;
+            padding: 10px;
+            border-top-left-radius: 4px;
+            border-bottom-left-radius: 4px;
+            border: 1px solid #ddd;
+            border-right: 0;
+            height: 20px;
+            width: 30px;
+            margin-bottom: 5px;
+            margin-right: 7px;
+        }
+
+        .input-group .icon {
+            text-align:center;
+        }
+    </style>
 </head>
 <body>
     <div class="login-container">
@@ -56,7 +74,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <h2>Login</h2>
             <form method="post" action="">
                 <div class="input-group">
-                    <span class="icon"><i class="fas fa-user"></i></span>
+                    <span class="icon "><i class="fas fa-user"></i></span>
                     <input type="text" id="username" name="username" placeholder="Username" required>
                 </div>
                 <div class="input-group">
