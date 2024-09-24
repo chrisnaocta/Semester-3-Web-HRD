@@ -61,7 +61,7 @@ if (isset($_SESSION['message'])) {
                 <div class="col-md-12 d-flex justify-content-between align-items-center">
                     <h4>Identitas Usaha</h4>
                     <div>
-                        <button type="button" class="btn btn-primary mb-3 mr-2" data-bs-toggle="modal" data-bs-target="#adddusahaModal"><i class='fas fa-plus'></i> Add </button>
+                        <button type="button" class="btn btn-primary mb-3 mr-2" data-bs-toggle="modal" data-bs-target="#addusahaModal"><i class='fas fa-plus'></i> Add </button>
                         <button type="button" class="btn btn-secondary mb-3" id="printButton"><i class='fas fa-print'></i> Print</button>
                     </div>
                 </div>
@@ -69,7 +69,7 @@ if (isset($_SESSION['message'])) {
             <div class="row">
                 <div class="col-md-12">
                     <div class="table-responsive">
-                        <table style="border: 3px;" class="table table-hover table-bordered">    
+                        <table style="border: 3px;" class="table table-striped table-bordered table-hover">    
                             <thead class="text-center table-primary" >
                                 <tr>
                                     <th style="width: 1px;">No</th> 
@@ -145,11 +145,11 @@ if (isset($_SESSION['message'])) {
 </div>
 
 <!-- Modal Add Usaha -->
-<div class="modal fade" id="adddusahaModal" tabindex="-1" aria-labelledby="addusahaModalLabel" aria-hidden="true">
+<div class="modal fade" id="addusahaModal" tabindex="-1" aria-labelledby="addusahaModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="editusahaModalLabel">Add Usaha</h5>
+                <h5 class="modal-title" id="addusahaModalLabel">Add Usaha</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">

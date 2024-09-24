@@ -67,8 +67,8 @@ if (isset($_SESSION['message'])) {
             <div class="row">
                 <div class="col-md-12">
                     <div class="table-responsive">
-                        <table id="jabatanTable" class="table table-bordered table-striped table-hover">    
-                            <thead class="text-center">
+                        <table id="jabatanTable" class="table table-striped table-bordered table-hover">    
+                            <thead class="text-center table-danger">
                                 <tr>
                                     <th>No</th>
                                     <th>Kode</th>
