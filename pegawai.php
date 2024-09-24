@@ -31,7 +31,7 @@ if ($latestidpeg) {
     $latestNumber = (int) substr($latestidpeg['idpeg'], 1);
     $urut = $latestNumber + 1;
 }
-$newidusaha = 'P' . str_pad($urut, 3, '0', STR_PAD_LEFT);
+$newidpegawai = 'P' . str_pad($urut, 3, '0', STR_PAD_LEFT);
 
 
 // Simpan pesan ke variabel dan hapus dari session
@@ -80,7 +80,7 @@ if (isset($_SESSION['message'])) {
                                     <th>Gaji</th>
                                     <th>Status</th>
                                     <th>Gender</th>
-                                    <th>Status</th>
+                                    <th>Status Kerja</th>
                                     <th>Cuti</th>
                                     <th>Pendidikan</th>
                                     <th>Tanggal Kerja</th>
@@ -109,19 +109,22 @@ if (isset($_SESSION['message'])) {
                                             <td>
                                                 <div class="d-flex justify-content-center">
                                                     <button class='btn btn-warning btn-sm edit-btn mr-1' 
-                                                            data-bs-toggle='modal' 
-                                                            data-bs-target='#editusaha'
-                                                            data-idusaha='<?php echo htmlspecialchars($row['idusaha']); ?>'
-                                                            data-nama='<?php echo htmlspecialchars($row['nama']); ?>'
-                                                            data-alamat='<?php echo htmlspecialchars($row['alamat']); ?>'
-                                                            data-notelepon='<?php echo htmlspecialchars($row['notelepon']); ?>'
-                                                            data-fax='<?php echo htmlspecialchars($row['fax']); ?>'
-                                                            data-email='<?php echo htmlspecialchars($row['email']); ?>'
-                                                            data-npwp='<?php echo htmlspecialchars($row['npwp']); ?>'
-                                                            data-bank='<?php echo htmlspecialchars($row['bank']); ?>'
-                                                            data-noaccount='<?php echo htmlspecialchars($row['noaccount']); ?>'
-                                                            data-atasnama='<?php echo htmlspecialchars($row['atasnama']); ?>'
-                                                            data-pimpinan='<?php echo htmlspecialchars($row['pimpinan']); ?>'>
+                                                        data-bs-toggle='modal' 
+                                                        data-bs-target='#editpegawai'
+                                                        data-idpeg='<?php echo htmlspecialchars($row['idpeg']); ?>'
+                                                        data-iddep='<?php echo htmlspecialchars($row['iddep']); ?>'
+                                                        data-idjab='<?php echo htmlspecialchars($row['idjab']); ?>'
+                                                        data-nama='<?php echo htmlspecialchars($row['nama']); ?>'
+                                                        data-alamat='<?php echo htmlspecialchars($row['alamat']); ?>'
+                                                        data-telepon='<?php echo htmlspecialchars($row['telepon']); ?>'
+                                                        data-email='<?php echo htmlspecialchars($row['email']); ?>'
+                                                        data-gaji='<?php echo htmlspecialchars($row['gaji']); ?>' 
+                                                        data-status='<?php echo htmlspecialchars($row['status']); ?>' 
+                                                        data-jkelamin='<?php echo htmlspecialchars($row['jkelamin']); ?>'
+                                                        data-skerja='<?php echo htmlspecialchars($row['skerja']); ?>' 
+                                                        data-cuti='<?php echo htmlspecialchars($row['cuti']); ?>'
+                                                        data-jenjangpendidikan='<?php echo htmlspecialchars($row['jenjangpendidikan']); ?>' 
+                                                        data-tglkerja='<?php echo htmlspecialchars($row['tglkerja']); ?>'> 
                                                         <i class='fas fa-edit'></i> Edit
                                                     </button>
                                                     <button class="btn btn-danger btn-sm delete-btn"
@@ -150,14 +153,14 @@ if (isset($_SESSION['message'])) {
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="addPegawaiModalLabel">Add Usaha</h5>
+                <h5 class="modal-title" id="addPegawaiModalLabel">Add Pegawai</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <form action="add_pegawai.php" method="post">
                     <div class="mb-3">
                     <label for="idpeg" class="form-label">Id pegawai</label>
-                        <input type="text" class="form-control" id="idpeg" name="idpeg" value="<?php echo htmlspecialchars($newidusaha); ?>" readonly>
+                        <input type="text" class="form-control" id="idpeg" name="idpeg" value="<?php echo htmlspecialchars($newidpegawai); ?>" readonly>
                     </div>
                     <div class="mb-3">
                         <label for="add_iddep" class="form-label">Departemen</label>
@@ -256,7 +259,7 @@ if (isset($_SESSION['message'])) {
                         <select class="form-control" id="add_status" name="status" required>
                             <option value="" disabled selected>Pilih Status Menikah</option>
                             <option>Menikah</option>
-                            <option>Belum Menikah</option>
+                            <option>Belum</option>
                         </select>
                     </div>
                     <div class="mb-3">
@@ -281,7 +284,7 @@ if (isset($_SESSION['message'])) {
                     </div>
                     <div class="mb-3">
                         <label for="add_pendidikan" class="form-label">Pendidikan</label>
-                        <input type="text" class="form-control" id="add_pendidikan" name="pendidikan" required>
+                        <input type="text" class="form-control" id="add_pendidikan" name="jenjangpendidikan" required>
                     </div>
                     <div class="mb-3">
                         <label for="add_tglkerja" class="form-label">Tanggal Kerja</label>
@@ -319,8 +322,148 @@ if (isset($_SESSION['message'])) {
     });
 </script>
 
-<!-- Modal Edit Usaha -->
- 
+<!-- Modal Edit Pegawai -->
+<div class="modal fade" id="editpegawai" tabindex="-1" aria-labelledby="editPegawaiModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editPegawaiModalLabel">Add Usaha</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="edit_pegawai.php" method="post" data-*>
+                    <div class="mb-3">
+                        <label for="edit_idpeg" class="form-label">Id pegawai</label>
+                        <input type="text" class="form-control" id="edit_idpeg" name="idpeg"readonly>
+                    </div>
+                    <div class="mb-3">
+                        <label for="edit_iddep" class="form-label">Departemen</label>
+                        <select class="form-control" id="edit_iddep" name="iddep" required>
+                            <option value="" disabled selected>Pilih Departemen</option>
+                            <option value="D001">Direksi</option>
+                            <option value="D002">Manajemen Puncak</option>
+                            <option value="D003">Keuangan</option>
+                            <option value="D004">SDM</option>
+                            <option value="D005">Pemasaran</option>
+                            <option value="D006">Operasional</option>
+                            <option value="D007">Penjualan</option>
+                            <option value="D008">Teknologi Informasi</option>
+                            <option value="D009">Riset dan Pengembangan</option>
+                            <option value="D010">Hubungan Masyarakat</option>
+                            <option value="D011">Kualitas</option>
+                            <option value="D012">Pengadaan</option>
+                            <option value="D013">Layanan Pelanggan</option>
+                            <option value="D014">Hukum</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="edit_idjab" class="form-label">Jabatan</label>
+                        <select class="form-control" id="edit_idjab" name="idjab" required>
+                            <option value="" disabled selected>Pilih Jabatan</option>
+                            <option value="J001">Direktur Utama (CEO)</option>
+                            <option value="J002">Direktur Keuangan (CFO)</option>
+                            <option value="J003">Direktur Operasional (COO)</option>
+                            <option value="J004">Direktur Pemasaran (CMO)</option>
+                            <option value="J005">Direktur Sumber Daya Manusia (CHRO)</option>
+                            <option value="J006">Manajer Keuangan</option>
+                            <option value="J007">Manajer Operasional</option>
+                            <option value="J008">Manajer Pemasaran</option>
+                            <option value="J009">Manajer SDM</option>
+                            <option value="J010">Manajer IT</option>
+                            <option value="J011">Manajer Penjualan</option>
+                            <option value="J012">Akuntan</option>
+                            <option value="J013">Staff Pemasaran</option>
+                            <option value="J014">Staf SDM</option>
+                            <option value="J015">Staf IT</option>
+                            <option value="J016">Staf IT</option>
+                            <option value="J017">Staf Penjualan</option>
+                            <option value="J018">Asisten Administrasi</option>
+                            <option value="J019">Customer Service</option>
+                            <option value="J020">Staff Kebersihan</option>
+                            <option value="J021">Driver</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="edit_nama" class="form-label">Nama</label>
+                        <input type="text" class="form-control" id="edit_nama" name="nama" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="edit_alamat" class="form-label">Alamat</label>
+                        <input type="text" class="form-control" id="edit_alamat" name="alamat"required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="edit_telepon" class="form-label">Telepon</label>
+                        <input type="text" class="form-control" id="edit_telepon" minlength="10" maxlength="12" name="telepon"required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="edit_email" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="edit_email" name="email"required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="edit_gaji" class="form-label">Gaji</label>
+                        <input type="text" class="form-control" id="edit_gaji" minlength="7" maxlength="9" name="gaji"required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="edit_status" class="form-label">Status</label>
+                        <select class="form-control" id="edit_status" name="status" required>
+                            <option value="" disabled selected>Pilih Status Menikah</option>
+                            <option>Menikah</option>
+                            <option>Belum</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="edit_jkelamin" class="form-label">Jenis Kelamin</label>
+                        <select class="form-control" id="edit_jkelamin" name="jkelamin" required>
+                            <option value="" disabled selected>Jenis Kelamin</option>
+                            <option>Pria</option>
+                            <option>Wanita</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="edit_bank" class="form-label">Status</label>
+                        <select class="form-control" id="edit_skerja" name="skerja" required>
+                            <option value="" disabled selected>Pilih Status Bekerja</option>
+                            <option>Tetap</option>
+                            <option>Magang</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="edit_cuti" class="form-label">Cuti</label>
+                        <input type="text" class="form-control" id="edit_cuti" minlength="1" maxlength="3" name="cuti"required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="edit_jenjangpendidikan" class="form-label">Pendidikan</label>
+                        <input type="text" class="form-control" id="edit_jenjangpendidikan" name="jenjangpendidikan" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="edit_tglkerja" class="form-label">Tanggal Kerja</label>
+                        <input type="date" class="form-control" id="edit_tglkerja" name="tglkerja" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Update</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Function to prevent entering numbers in input
+    document.querySelectorAll('input[id="edit_pimpinan"] , input[id="edit_atasnama"]').forEach(function(inputField) {
+        inputField.addEventListener('input', function(e) {
+            // Remove any non-letter characters (numbers, symbols, etc.) as the user types
+            this.value = this.value.replace(/[^a-zA-Z\s]/g, '');
+        });
+    });
+
+    document.querySelectorAll('input[id="edit_notelepon"], input[id="edit_fax"], input[id="edit_npwp"], input[id="edit_noaccount"]').forEach(function(inputField) {
+        inputField.addEventListener('input', function(e) {
+            // Replace any non-digit characters with an empty string
+            this.value = this.value.replace(/[^0-9]/g, '');
+        });
+    });
+</script>
 
 <script>
     // Show message if it exists in the session
@@ -337,30 +480,36 @@ if (isset($_SESSION['message'])) {
         document.querySelectorAll('.edit-btn').forEach(button => {
             button.addEventListener('click', function () {
                 // Get data attributes from the button
-                const idusaha = this.getAttribute('data-idusaha');
+                const idpeg = this.getAttribute('data-idpeg');
+                const iddep = this.getAttribute('data-iddep');
+                const idjab = this.getAttribute('data-idjab');
                 const nama = this.getAttribute('data-nama');
                 const alamat = this.getAttribute('data-alamat');
-                const notelepon = this.getAttribute('data-notelepon');
-                const fax = this.getAttribute('data-fax');
+                const telepon = this.getAttribute('data-telepon');
                 const email = this.getAttribute('data-email');
-                const npwp = this.getAttribute('data-npwp');
-                const bank = this.getAttribute('data-bank');
-                const noaccount = this.getAttribute('data-noaccount');
-                const atasnama = this.getAttribute('data-atasnama');
-                const pimpinan = this.getAttribute('data-pimpinan');
+                const gaji = this.getAttribute('data-gaji');
+                const status = this.getAttribute('data-status');
+                const jkelamin = this.getAttribute('data-jkelamin'); // Assuming you have a data attribute for this
+                const skerja = this.getAttribute('data-skerja'); // Assuming you have a data attribute for this
+                const cuti = this.getAttribute('data-cuti'); // Assuming you have a data attribute for this
+                const jenjangpendidikan = this.getAttribute('data-jenjangpendidikan'); // Assuming you have a data attribute for this
+                const tglkerja = this.getAttribute('data-tglkerja'); // Assuming you have a data attribute for this
 
                 // Set values in the modal
-                document.getElementById('edit_idusaha').value = idusaha;
+                document.getElementById('edit_idpeg').value = idpeg;
+                document.getElementById('edit_iddep').value = iddep;
+                document.getElementById('edit_idjab').value = idjab;
                 document.getElementById('edit_nama').value = nama;
                 document.getElementById('edit_alamat').value = alamat;
-                document.getElementById('edit_notelepon').value = notelepon;
-                document.getElementById('edit_fax').value = fax;
+                document.getElementById('edit_telepon').value = telepon;
                 document.getElementById('edit_email').value = email;
-                document.getElementById('edit_npwp').value = npwp;
-                document.getElementById('edit_bank').value = bank;
-                document.getElementById('edit_noaccount').value = noaccount;
-                document.getElementById('edit_atasnama').value = atasnama;
-                document.getElementById('edit_pimpinan').value = pimpinan;
+                document.getElementById('edit_gaji').value = gaji;
+                document.getElementById('edit_status').value = status;
+                document.getElementById('edit_jkelamin').value = jkelamin;
+                document.getElementById('edit_skerja').value = skerja;
+                document.getElementById('edit_cuti').value = cuti;
+                document.getElementById('edit_jenjangpendidikan').value = jenjangpendidikan;
+                document.getElementById('edit_tglkerja').value = tglkerja;
             });
         });
     });
@@ -417,7 +566,7 @@ if (isset($_SESSION['message'])) {
     $(document).ready(function() {
         // Handle print button click
         $('#printButton').click(function() {
-            window.open('print_usaha.php', '_blank');
+            window.open('print_pegawai.php', '_blank');
         });
     });
 </script>

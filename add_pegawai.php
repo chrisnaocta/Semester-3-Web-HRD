@@ -16,7 +16,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
     $jkelamin = $_POST['jkelamin'];
     $skerja = $_POST['skerja'];
     $cuti = $_POST['cuti'];
-    $jenjangpendidikan = $_POST['pendidikan'];
+    $jenjangpendidikan = $_POST['jenjangpendidikan'];
     $tglkerja = $_POST['tglkerja'];
     $created_at = date('Y-m-d H:i:s'); // Using current timestamp for created_at
 

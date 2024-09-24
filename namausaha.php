@@ -254,31 +254,31 @@ if (isset($_SESSION['message'])) {
                     </div>
                     <div class="mb-3">
                         <label for="edit_nama" class="form-label">Nama Usaha</label>
-                        <input type="text" class="form-control" id="edit_nama" name="nama">
+                        <input type="text" class="form-control" id="edit_nama" name="nama" required>
                     </div>
                     <div class="mb-3">
                         <label for="edit_alamat" class="form-label">Alamat</label>
-                        <input type="text" class="form-control" id="edit_alamat" name="alamat">
+                        <input type="text" class="form-control" id="edit_alamat" name="alamat" required>
                     </div>
                     <div class="mb-3">
                         <label for="edit_notelepon" class="form-label">No Telepon</label>
-                        <input type="text" class="form-control" id="edit_notelepon" name="notelepon">
+                        <input type="text" class="form-control" id="edit_notelepon" name="notelepon" required>
                     </div>
                     <div class="mb-3">
                         <label for="edit_fax" class="form-label">Fax</label>
-                        <input type="text" class="form-control" id="edit_fax" name="fax">
+                        <input type="text" class="form-control" id="edit_fax" name="fax" required>
                     </div>
                     <div class="mb-3">
                         <label for="edit_email" class="form-label">Email</label>
-                        <input type="text" class="form-control" id="edit_email" name="email">
+                        <input type="text" class="form-control" id="edit_email" name="email" required>
                     </div>
                     <div class="mb-3">
                         <label for="edit_npwp" class="form-label">NPWP</label>
-                        <input type="text" class="form-control" id="edit_npwp" name="npwp">
+                        <input type="text" class="form-control" id="edit_npwp" name="npwp" required>
                     </div>
                     <div class="mb-3">
                         <label for="edit_bank" class="form-label">Bank</label>
-                        <select class="form-control" id="edit_bank" name="bank">
+                        <select class="form-control" id="edit_bank" name="bank" required>
                             <option value="" disabled selected>Select a bank</option>
                             <option>BCA</option>
                             <option>BRI</option>
@@ -290,15 +290,15 @@ if (isset($_SESSION['message'])) {
                     </div>
                     <div class="mb-3">
                         <label for="edit_noaccount" class="form-label">No Account</label>
-                        <input type="text" class="form-control" id="edit_noaccount" name="noaccount">
+                        <input type="text" class="form-control" id="edit_noaccount" name="noaccount" required>
                     </div>
                     <div class="mb-3">
                         <label for="edit_atasnama" class="form-label">Atas Nama</label>
-                        <input type="text" class="form-control" id="edit_atasnama" name="atasnama">
+                        <input type="text" class="form-control" id="edit_atasnama" name="atasnama" required>
                     </div>
                     <div class="mb-3">
                         <label for="edit_pimpinan" class="form-label">Pimpinan</label>
-                        <input type="text" class="form-control" id="edit_pimpinan" name="pimpinan">
+                        <input type="text" class="form-control" id="edit_pimpinan" name="pimpinan" required>
                     </div>
                     <button type="submit" class="btn btn-primary">Update</button>
                 </form>
