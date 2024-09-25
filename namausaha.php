@@ -69,7 +69,7 @@ if (isset($_SESSION['message'])) {
             <div class="row">
                 <div class="col-md-12">
                     <div class="table-responsive">
-                        <table style="border: 3px;" class="table table-striped table-bordered table-hover">    
+                        <table id="usahaTable" style="border: 3px;" class="table table-striped table-bordered table-hover">    
                             <thead class="text-center table-primary" >
                                 <tr>
                                     <th style="width: 1px;">No</th> 
@@ -325,6 +325,33 @@ if (isset($_SESSION['message'])) {
 </script>
 
 <script>
+    //Pagination
+    $(document).ready(function() {
+        // Adjust DataTables' scrolling to avoid overlapping with the footer
+        function adjustTableHeight() {
+            var footerHeight = $('footer').outerHeight();
+            var tableHeight = 'calc(90vh - 290px - ' + footerHeight + 'px)';
+
+            $('#usahaTable').DataTable().destroy();
+            $('#usahaTable').DataTable({
+                "pagingType": "simple_numbers",
+                "scrollY": tableHeight,
+                "scrollCollapse": true,
+                "paging": true,
+                "pageLength": 5,
+                "dom": 'tip',
+            });
+        }
+
+        // Call the function to adjust table height initially
+        adjustTableHeight();
+
+        // Adjust table height on window resize
+        $(window).resize(function() {
+            adjustTableHeight();
+        });
+    });
+
     // Show message if it exists in the session
     <?php if ($message): ?>
         Swal.fire({
