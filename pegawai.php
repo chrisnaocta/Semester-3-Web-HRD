@@ -4,7 +4,11 @@ require 'config.php';
 require 'login_session.php';
 
 // Ambil data dari tabel namausaha
-$pegawai = $conn->query("SELECT * FROM pegawai");
+$pegawai = $conn->query("SELECT * FROM pegawai
+    LEFT JOIN 
+        departemen ON pegawai.iddep = departemen.iddep
+    LEFT JOIN 
+        jabatan ON pegawai.idjab = jabatan.idjab");
 
 $iduser = $_SESSION['iduser'];
 
@@ -45,6 +49,13 @@ if (isset($_SESSION['message'])) {
 <!-- Bootstrap 5 source -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Include jQuery first -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- Include Bootstrap and DataTables -->
+<script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
 
 <?php require 'head.php'; ?>
 <div class="wrapper">
@@ -136,7 +147,7 @@ if (isset($_SESSION['message'])) {
                                         </tr>
                                         <?php endforeach ?>
                                         <?php } else { ?>
-                                            <tr><td colspan="6" class="text-center">No data found</td></tr>
+                                            <tr><td colspan="15" class="text-center">No data found</td></tr>
                                 <?php } ?>
                             </tbody>
                         </table>
@@ -164,75 +175,27 @@ if (isset($_SESSION['message'])) {
                     </div>
                     <div class="mb-3">
                         <label for="add_iddep" class="form-label">Departemen</label>
-                        <select class="form-control" id="add_iddep" name="iddep" onchange="updateIdDep()" required>
-                            <option value="" disabled selected>Pilih Departemen</option>
-                            <option value="D001">Direksi</option>
-                            <option value="D002">Manajemen Puncak</option>
-                            <option value="D003">Keuangan</option>
-                            <option value="D004">SDM</option>
-                            <option value="D005">Pemasaran</option>
-                            <option value="D006">Operasional</option>
-                            <option value="D007">Penjualan</option>
-                            <option value="D008">Teknologi Informasi</option>
-                            <option value="D009">Riset dan Pengembangan</option>
-                            <option value="D010">Hubungan Masyarakat</option>
-                            <option value="D011">Kualitas</option>
-                            <option value="D012">Pengadaan</option>
-                            <option value="D013">Layanan Pelanggan</option>
-                            <option value="D014">Hukum</option>
+                        <select class="form-control" id="add_iddep" name="iddep" required>
+                        <option value="">Pilih Departemen</option>
+                            <?php
+                            // Ambil data departemen dari database
+                            $departemenResult = $conn->query("SELECT iddep, departemen FROM departemen");
+                            while ($departemen = $departemenResult->fetch_assoc()) {
+                                echo "<option value='" .
+                                htmlspecialchars($departemen['iddep']) . "'>" .
+                                htmlspecialchars($departemen['departemen']) .
+                                "</option>";
+                            }
+                            ?>
                         </select>
-                        <!-- Hidden input to store the iddep value -->
-                        <input type="hidden" id="hidden_iddep" name="hidden_iddep" />
                     </div>
-                    <script>
-                        function updateIdDep() {
-                            // Get the selected value from the dropdown
-                            var selectedValue = document.getElementById("add_iddep").value;
-                            
-                            // Set the hidden input value to the selected value (iddep)
-                            document.getElementById("hidden_iddep").value = selectedValue;
-                        }
-                    </script>
 
                     <div class="mb-3">
                         <label for="add_idjab" class="form-label">Jabatan</label>
-                        <select class="form-control" id="add_idjab" name="idjab" onchange="updateIdJab()" required>
-                            <option value="" disabled selected>Pilih Jabatan</option>
-                            <option value="J001">Direktur Utama (CEO)</option>
-                            <option value="J002">Direktur Keuangan (CFO)</option>
-                            <option value="J003">Direktur Operasional (COO)</option>
-                            <option value="J004">Direktur Pemasaran (CMO)</option>
-                            <option value="J005">Direktur Sumber Daya Manusia (CHRO)</option>
-                            <option value="J006">Manajer Keuangan</option>
-                            <option value="J007">Manajer Operasional</option>
-                            <option value="J008">Manajer Pemasaran</option>
-                            <option value="J009">Manajer SDM</option>
-                            <option value="J010">Manajer IT</option>
-                            <option value="J011">Manajer Penjualan</option>
-                            <option value="J012">Akuntan</option>
-                            <option value="J013">Staff Pemasaran</option>
-                            <option value="J014">Staf SDM</option>
-                            <option value="J015">Staf IT</option>
-                            <option value="J016">Staf IT</option>
-                            <option value="J017">Staf Penjualan</option>
-                            <option value="J018">Asisten Administrasi</option>
-                            <option value="J019">Customer Service</option>
-                            <option value="J020">Staff Kebersihan</option>
-                            <option value="J021">Driver</option>
+                        <select class="form-control" id="add_idjab" name="idjab" required>
+                            <option value="">Pilih Jabatan</option>
                         </select>
-                        <!-- Hidden input to store the iddep value -->
-                        <input type="hidden" id="hidden_iddep" name="hidden_iddep" />
                     </div>
-                    
-                    <script>
-                        function updateIdJab() {
-                            // Get the selected value from the dropdown
-                            var selectedValue = document.getElementById("add_idjab").value;
-                            
-                            // Set the hidden input value to the selected value (iddep)
-                            document.getElementById("hidden_idjab").value = selectedValue;
-                        }
-                    </script>
 
                     <div class="mb-3">
                         <label for="add_nama" class="form-label">Nama</label>
@@ -284,7 +247,15 @@ if (isset($_SESSION['message'])) {
                     </div>
                     <div class="mb-3">
                         <label for="add_pendidikan" class="form-label">Pendidikan</label>
-                        <input type="text" class="form-control" id="add_pendidikan" name="jenjangpendidikan" required>
+                        <select class="form-control" id="add_pendidikan" name="jenjangpendidikan" required>
+                            <option value="" disabled selected>Pilih Status Bekerja</option>
+                            <option>SMA</option>
+                            <option>SMK</option>
+                            <option>D3</option>
+                            <option>S1</option>
+                            <option>S2</option>
+                            <option>S3</option>
+                        </select>
                     </div>
                     <div class="mb-3">
                         <label for="add_tglkerja" class="form-label">Tanggal Kerja</label>
@@ -297,13 +268,32 @@ if (isset($_SESSION['message'])) {
     </div>
 </div>
 
-<!-- Include jQuery first -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-<!-- Include Bootstrap and DataTables -->
-<script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
-
+<!-- AJAX Untuk Pilih Jabatan -->
+<script>
+$(document).ready(function() {
+    $('#add_iddep').change(function() {
+        var iddep = $(this).val();
+        if (iddep !== "") {
+            $.ajax({
+                url: 'get_jabatan.php',
+                method: 'POST',
+                data: {iddep: iddep},
+                beforeSend: function() {
+                    $('#add_idjab').html('<option>Loading...</option>');
+                },
+                success: function(response) {
+                    $('#add_idjab').html(response);
+                },
+                error: function() {
+                    $('#add_idjab').html('<option>Error loading jabatan</option>');
+                }
+            });
+        } else {
+            $('#add_idjab').html('<option value="">Pilih Jabatan</option>');
+        }
+    });
+});
+</script>
 
 <script>
     // Function to prevent entering numbers in input
@@ -339,49 +329,24 @@ if (isset($_SESSION['message'])) {
                     <div class="mb-3">
                         <label for="edit_iddep" class="form-label">Departemen</label>
                         <select class="form-control" id="edit_iddep" name="iddep" required>
-                            <option value="" disabled selected>Pilih Departemen</option>
-                            <option value="D001">Direksi</option>
-                            <option value="D002">Manajemen Puncak</option>
-                            <option value="D003">Keuangan</option>
-                            <option value="D004">SDM</option>
-                            <option value="D005">Pemasaran</option>
-                            <option value="D006">Operasional</option>
-                            <option value="D007">Penjualan</option>
-                            <option value="D008">Teknologi Informasi</option>
-                            <option value="D009">Riset dan Pengembangan</option>
-                            <option value="D010">Hubungan Masyarakat</option>
-                            <option value="D011">Kualitas</option>
-                            <option value="D012">Pengadaan</option>
-                            <option value="D013">Layanan Pelanggan</option>
-                            <option value="D014">Hukum</option>
+                        <option value="">Pilih Departemen</option>
+                            <?php
+                            // Ambil data departemen dari database
+                            $departemenResult = $conn->query("SELECT iddep, departemen FROM departemen");
+                            while ($departemen = $departemenResult->fetch_assoc()) {
+                                echo "<option value='" .
+                                htmlspecialchars($departemen['iddep']) . "'>" .
+                                htmlspecialchars($departemen['departemen']) .
+                                "</option>";
+                            }
+                            ?>
                         </select>
                     </div>
 
                     <div class="mb-3">
                         <label for="edit_idjab" class="form-label">Jabatan</label>
                         <select class="form-control" id="edit_idjab" name="idjab" required>
-                            <option value="" disabled selected>Pilih Jabatan</option>
-                            <option value="J001">Direktur Utama (CEO)</option>
-                            <option value="J002">Direktur Keuangan (CFO)</option>
-                            <option value="J003">Direktur Operasional (COO)</option>
-                            <option value="J004">Direktur Pemasaran (CMO)</option>
-                            <option value="J005">Direktur Sumber Daya Manusia (CHRO)</option>
-                            <option value="J006">Manajer Keuangan</option>
-                            <option value="J007">Manajer Operasional</option>
-                            <option value="J008">Manajer Pemasaran</option>
-                            <option value="J009">Manajer SDM</option>
-                            <option value="J010">Manajer IT</option>
-                            <option value="J011">Manajer Penjualan</option>
-                            <option value="J012">Akuntan</option>
-                            <option value="J013">Staff Pemasaran</option>
-                            <option value="J014">Staf SDM</option>
-                            <option value="J015">Staf IT</option>
-                            <option value="J016">Staf IT</option>
-                            <option value="J017">Staf Penjualan</option>
-                            <option value="J018">Asisten Administrasi</option>
-                            <option value="J019">Customer Service</option>
-                            <option value="J020">Staff Kebersihan</option>
-                            <option value="J021">Driver</option>
+                            <option value="">Pilih Jabatan</option>
                         </select>
                     </div>
 
@@ -435,7 +400,15 @@ if (isset($_SESSION['message'])) {
                     </div>
                     <div class="mb-3">
                         <label for="edit_jenjangpendidikan" class="form-label">Pendidikan</label>
-                        <input type="text" class="form-control" id="edit_jenjangpendidikan" name="jenjangpendidikan" required>
+                        <select class="form-control" id="add_pendidikan" name="jenjangpendidikan" required>
+                            <option value="" disabled selected>Pilih Status Bekerja</option>
+                            <option>SMA</option>
+                            <option>SMK</option>
+                            <option>D3</option>
+                            <option>S1</option>
+                            <option>S2</option>
+                            <option>S3</option>
+                        </select>
                     </div>
                     <div class="mb-3">
                         <label for="edit_tglkerja" class="form-label">Tanggal Kerja</label>
@@ -447,6 +420,33 @@ if (isset($_SESSION['message'])) {
         </div>
     </div>
 </div>
+
+<!-- AJAX Untuk Pilih Jabatan -->
+<script>
+$(document).ready(function() {
+    $('#edit_iddep').change(function() {
+        var iddep = $(this).val();
+        if (iddep !== "") {
+            $.ajax({
+                url: 'get_jabatan.php',
+                method: 'POST',
+                data: {iddep: iddep},
+                beforeSend: function() {
+                    $('#edit_idjab').html('<option>Loading...</option>');
+                },
+                success: function(response) {
+                    $('#edit_idjab').html(response);
+                },
+                error: function() {
+                    $('#edit_idjab').html('<option>Error loading jabatan</option>');
+                }
+            });
+        } else {
+            $('#edit_idjab').html('<option value="">Pilih Jabatan</option>');
+        }
+    });
+});
+</script>
 
 <script>
     // Function to prevent entering numbers in input

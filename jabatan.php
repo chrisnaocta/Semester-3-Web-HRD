@@ -25,7 +25,13 @@ $stmt->fetch();
 $stmt->close();
 
 // Ambil data dari tabel jabatan
-$result = $conn->query("SELECT * FROM jabatan");
+$result = $conn->query("
+    SELECT j.idjab, j.jabatan, d.departemen, d.iddep
+    FROM jabatan j
+    JOIN departemen_jabatan dj ON j.idjab = dj.idjab
+    JOIN departemen d ON dj.iddep = d.iddep
+    ORDER BY j.idjab ASC
+");
 
 // Dapatkan nomor urut terbaru untuk idjab baru
 $stmt = $conn->query("SELECT idjab FROM jabatan ORDER BY idjab DESC LIMIT 1");
@@ -87,7 +93,15 @@ if (isset($_SESSION['message'])) {
                                         echo "<td>" . htmlspecialchars($jabatan['jabatan']) . "</td>";
                                         echo "<td class='text-center'>";
                                         echo "<div class='d-flex justify-content-center'>";
-                                        echo "<button class='btn btn-warning btn-sm edit-btn mr-1' data-bs-toggle='modal' data-bs-target='#editjabatanModal' data-id='" . htmlspecialchars($jabatan['idjab']) . "' data-name='" . htmlspecialchars($jabatan['jabatan']) .  "'><i class='fas fa-edit'></i> Edit</button>";
+                                        echo "<button class='btn btn-warning btn-sm edit-btn mr-1'
+                                        data-bs-toggle='modal'
+                                        data-bs-target='#editjabatanModal'
+                                        data-id='" . htmlspecialchars($jabatan['idjab']) . "'
+                                        data-jabatan='" . htmlspecialchars($jabatan['jabatan']) .  "'
+                                        data-departemen='" . htmlspecialchars($jabatan['departemen']) .  "'
+                                        data-iddep='" . htmlspecialchars($jabatan['iddep']) . "'>   
+                                        <i class='fas fa-edit'></i> Edit
+                                        </button>";
                                         echo "<button class='btn btn-danger btn-sm delete-btn' data-id='" . htmlspecialchars($jabatan['idjab']) . "'><i class='fas fa-trash'></i> Delete</button>";
                                         echo "</div>";
                                         echo "</td>";
@@ -119,11 +133,24 @@ if (isset($_SESSION['message'])) {
                 <form action="add_jabatan.php" method="post">
                     <div class="mb-3">
                         <label for="idjab" class="form-label">Kode jabatan</label>
-                        <input type="text" class="form-control" id="idjab" name="idjab" value="<?php echo htmlspecialchars($newidjab); ?>" readonly>
+                        <input type="text" class="form-control" id="add_idjab" name="idjab" value="<?php echo htmlspecialchars($newidjab); ?>" readonly>
                     </div>
                     <div class="mb-3">
                         <label for="jabatan" class="form-label">Nama jabatan</label>
-                        <input type="text" class="form-control" id="jabatan" name="jabatan" required>
+                        <input type="text" class="form-control" id="add_jabatan" name="jabatan" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="departemen" class="form-label">Nama Departemen</label>
+                        <select class="form-control" id="add_departemen" name="departemen" required>
+                            <option value="">Pilih Departemen</option>
+                            <?php
+                            // Ambil data departemen dari database
+                            $departemenResult = $conn->query("SELECT iddep, departemen FROM departemen");
+                            while ($departemen = $departemenResult->fetch_assoc()) {
+                                echo "<option value='" . $departemen['iddep'] . "'>" . htmlspecialchars($departemen['departemen']) . "</option>";
+                            }
+                            ?>
+                        </select>
                     </div>
                     <button type="submit" class="btn btn-primary">Add</button>
                 </form>
@@ -149,6 +176,21 @@ if (isset($_SESSION['message'])) {
                     <div class="mb-3">
                         <label for="edit_jabatan" class="form-label">Nama jabatan</label>
                         <input type="text" class="form-control" id="edit_jabatan" name="jabatan" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="edit_departemen" class="form-label">Nama Departemen</label>
+                        <select class="form-control" id="edit_departemen" name="departemen" required>   
+                            <option value="">Pilih Departemen</option>
+                            <?php
+                            // Ambil data departemen dari database
+                            $departemenResult = $conn->query("SELECT iddep, departemen FROM departemen");
+                            while ($departemen = $departemenResult->fetch_assoc()) {
+                                // Use selected attribute if the iddep matches the current iddep
+                                $selected = (isset($current_iddep) && $current_iddep == $departemen['iddep']) ? "selected" : "";
+                                echo "<option value='" . $departemen['iddep'] . "' $selected>" . htmlspecialchars($departemen['departemen']) . "</option>";
+                            }
+                            ?>
+                        </select>
                     </div>
                     <button type="submit" class="btn btn-primary">Update</button>
                 </form>
@@ -193,11 +235,13 @@ if (isset($_SESSION['message'])) {
         $('#editjabatanModal').on('show.bs.modal', function(event) {
             var button = $(event.relatedTarget);
             var idjab = button.data('id');
-            var jabatan = button.data('name');
+            var jabatan = button.data('jabatan');
+            var iddep = button.data('iddep');
             
             var modal = $(this);
             modal.find('#edit_idjab').val(idjab);
             modal.find('#edit_jabatan').val(jabatan);
+            modal.find('#edit_departemen').val(iddep);
         });
 
         // Show message if it exists in the session
