@@ -47,6 +47,13 @@ if (isset($_SESSION['message'])) {
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
+<!-- Include jQuery first -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- Include Bootstrap and DataTables -->
+<script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
+
 <?php require 'head.php'; ?>
 <div class="wrapper">
     <header>
@@ -61,7 +68,7 @@ if (isset($_SESSION['message'])) {
                 <div class="col-md-12 d-flex justify-content-between align-items-center">
                     <h4>Identitas Usaha</h4>
                     <div>
-                        <button type="button" class="btn btn-primary mb-3 mr-2" data-bs-toggle="modal" data-bs-target="#addusahaModal"><i class='fas fa-plus'></i> Add </button>
+                        <button type="button" class="btn btn-primary mb-3 mr-2" id="checkDataButton"><i class='fas fa-plus'></i> Add </button>
                         <button type="button" class="btn btn-secondary mb-3" id="printButton"><i class='fas fa-print'></i> Print</button>
                     </div>
                 </div>
@@ -69,7 +76,7 @@ if (isset($_SESSION['message'])) {
             <div class="row">
                 <div class="col-md-12">
                     <div class="table-responsive">
-                        <table id="usahaTable" style="border: 3px;" class="table table-striped table-bordered table-hover">    
+                        <table id="usahaTable" style="border: 3px;" class="table table-bordered table-hover">    
                             <thead class="text-center table-primary" >
                                 <tr>
                                     <th style="width: 1px;">No</th> 
@@ -132,7 +139,7 @@ if (isset($_SESSION['message'])) {
                                         </tr>
                                         <?php endforeach ?>
                                         <?php } else { ?>
-                                            <tr><td colspan="6" class="text-center">No data found</td></tr>
+                                            <tr><td colspan="13" class="text-center">No data found</td></tr>
                                 <?php } ?>
                             </tbody>
                         </table>
@@ -212,14 +219,6 @@ if (isset($_SESSION['message'])) {
         </div>
     </div>
 </div>
-
-<!-- Include jQuery first -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-<!-- Include Bootstrap and DataTables -->
-<script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
-
 
 <script>
     // Function to prevent entering numbers in input
@@ -325,30 +324,24 @@ if (isset($_SESSION['message'])) {
 </script>
 
 <script>
-    //Pagination
     $(document).ready(function() {
-        // Adjust DataTables' scrolling to avoid overlapping with the footer
-        function adjustTableHeight() {
-            var footerHeight = $('footer').outerHeight();
-            var tableHeight = 'calc(90vh - 290px - ' + footerHeight + 'px)';
-
-            $('#usahaTable').DataTable().destroy();
-            $('#usahaTable').DataTable({
-                "pagingType": "simple_numbers",
-                "scrollY": tableHeight,
-                "scrollCollapse": true,
-                "paging": true,
-                "pageLength": 5,
-                "dom": 'tip',
+        $('#checkDataButton').on('click', function() {
+            // Perform an AJAX request to check if data exists in the 'namausaha' table
+            $.ajax({
+                url: 'cek_namausaha.php', // A new PHP file to handle the checking
+                type: 'GET',
+                success: function(response) {
+                    // Parse the JSON response
+                    var data = JSON.parse(response);
+                    if (data.total > 0) {
+                        // If data exists, show an alert or message
+                        alert('Data usaha sudah ada. Anda tidak dapat menambahkan lagi.');
+                    } else {
+                        // If no data, open the modal
+                        $('#addusahaModal').modal('show');
+                    }
+                }
             });
-        }
-
-        // Call the function to adjust table height initially
-        adjustTableHeight();
-
-        // Adjust table height on window resize
-        $(window).resize(function() {
-            adjustTableHeight();
         });
     });
 
