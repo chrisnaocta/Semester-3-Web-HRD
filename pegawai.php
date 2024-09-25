@@ -521,7 +521,6 @@ $(document).ready(function() {
                 const cuti = this.getAttribute('data-cuti'); // Assuming you have a data attribute for this
                 const jenjangpendidikan = this.getAttribute('data-jenjangpendidikan'); // Assuming you have a data attribute for this
                 const tglkerja = this.getAttribute('data-tglkerja'); // Assuming you have a data attribute for this
-
                 // Set values in the modal
                 document.getElementById('edit_idpeg').value = idpeg;
                 document.getElementById('edit_iddep').value = iddep;
