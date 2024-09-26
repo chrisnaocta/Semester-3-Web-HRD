@@ -58,6 +58,8 @@ if (isset($_SESSION['message'])) {
 <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
 
+<link rel="stylesheet" href="/Lat_HRD/CSS/pegawai.css">
+
 <?php require 'head.php'; ?>
 <div class="wrapper">
     <header>
@@ -83,7 +85,8 @@ if (isset($_SESSION['message'])) {
                         <table id="pegawaiTable" style="border: 3px;" class="table table-striped table-bordered table-hover">    
                             <thead class="text-center table-info" >
                                 <tr>
-                                    <th style="width: 0,5px;">No</th> 
+                                    <th style="width: 0,5px;">No</th>
+                                    <th>Foto</th> 
                                     <th style="width: 1%;">Id</th>
                                     <th>Nama</th>
                                     <th>Departemen</th>
@@ -108,6 +111,8 @@ if (isset($_SESSION['message'])) {
                                     foreach($pegawai as $row): ?>
                                         <tr>
                                             <td> <?php echo $no++; ?> </td>
+                                            <td> <img src="foto_peg/<?php echo htmlspecialchars($row['foto']);?>"
+                                            alt="User Photo" class="user-photo"></td>
                                             <td> <?php echo $row["idpeg"]; ?> </td>
                                             <td> <?php echo $row["nama"]; ?> </td>
                                             <td> <?php echo $row["departemen"]; ?> </td>
@@ -140,7 +145,8 @@ if (isset($_SESSION['message'])) {
                                                         data-skerja='<?php echo htmlspecialchars($row['skerja']); ?>' 
                                                         data-cuti='<?php echo htmlspecialchars($row['cuti']); ?>'
                                                         data-jenjangpendidikan='<?php echo htmlspecialchars($row['jenjangpendidikan']); ?>' 
-                                                        data-tglkerja='<?php echo htmlspecialchars($row['tglkerja']); ?>'> 
+                                                        data-tglkerja='<?php echo htmlspecialchars($row['tglkerja']); ?>'
+                                                        data-profile='<?php echo htmlspecialchars($row['foto']); ?>'> 
                                                         <i class='fas fa-edit'></i> Edit
                                                     </button>
                                                     <button class="btn btn-danger btn-sm delete-btn"
@@ -173,7 +179,7 @@ if (isset($_SESSION['message'])) {
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form action="add_pegawai.php" method="post">
+                <form action="add_pegawai.php" method="post" enctype="multipart/form-data">
                     <div class="mb-3">
                     <label for="idpeg" class="form-label">Id pegawai</label>
                         <input type="text" class="form-control" id="idpeg" name="idpeg" value="<?php echo htmlspecialchars($newidpegawai); ?>" readonly>
@@ -270,6 +276,10 @@ if (isset($_SESSION['message'])) {
                         <label for="add_tglkerja" class="form-label">Tanggal Kerja</label>
                         <input type="date" class="form-control" id="add_tglkerja" name="tglkerja" required>
                     </div>
+                    <div class="mb-3">
+                        <label for="profile-picture">Profile picture</label> <br>
+                        <input type="file" class="form-control" name="profile_peg" id="add_profile" accept=".jpg, .jpeg, .png, .jfif" required>
+                    </div>
                     <button type="submit" class="btn btn-primary">Add</button>
                 </form>
             </div>
@@ -326,11 +336,11 @@ $(document).ready(function() {
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="editPegawaiModalLabel">Add Pegawai</h5>
+                <h5 class="modal-title" id="editPegawaiModalLabel">Edit Pegawai</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form action="edit_pegawai.php" method="post" data-*>
+                <form action="edit_pegawai.php" method="post" enctype="multipart/form-data">
                     <div class="mb-3">
                         <label for="edit_idpeg" class="form-label">Id pegawai</label>
                         <input type="text" class="form-control" id="edit_idpeg" name="idpeg"readonly>
@@ -427,6 +437,16 @@ $(document).ready(function() {
                         <label for="edit_tglkerja" class="form-label">Tanggal Kerja</label>
                         <input type="date" class="form-control" id="edit_tglkerja" name="tglkerja" required>
                     </div>
+                    <!-- <div class="mb-3">
+                        <label for="profile-picture">Profile picture</label> <br>
+                        <input type="file" class="form-control" name="profile_peg" id="edit_profile" accept=".jpg, .jpeg, .png, .jfif" required>
+                    </div> -->
+                    <div class="mb-3">
+                        <label for="profile-picture">Profile picture</label> <br>
+                        <!-- Display current profile picture if exists -->
+                        <img id="current_profile_picture" src="" alt="Current Profile Picture" class="mb-2" style="max-width: 100px;">
+                        <input type="file" class="form-control" name="profile_peg" id="edit_profile" accept=".jpg, .jpeg, .png, .jfif">
+                    </div>
                     <button type="submit" class="btn btn-primary">Update</button>
                 </form>
             </div>
@@ -463,14 +483,14 @@ $(document).ready(function() {
 
 <script>
     // Function to prevent entering numbers in input
-    document.querySelectorAll('input[id="edit_pimpinan"] , input[id="edit_atasnama"]').forEach(function(inputField) {
+    document.querySelectorAll('input[id="edit_nama"]').forEach(function(inputField) {
         inputField.addEventListener('input', function(e) {
             // Remove any non-letter characters (numbers, symbols, etc.) as the user types
             this.value = this.value.replace(/[^a-zA-Z\s]/g, '');
         });
     });
-
-    document.querySelectorAll('input[id="edit_notelepon"], input[id="edit_fax"], input[id="edit_npwp"], input[id="edit_noaccount"]').forEach(function(inputField) {
+    
+    document.querySelectorAll('input[id="edit_telepon"], input[id="edit_gaji"], input[id="edit_cuti"]').forEach(function(inputField) {
         inputField.addEventListener('input', function(e) {
             // Replace any non-digit characters with an empty string
             this.value = this.value.replace(/[^0-9]/g, '');
@@ -534,6 +554,8 @@ $(document).ready(function() {
                 const cuti = this.getAttribute('data-cuti'); // Assuming you have a data attribute for this
                 const jenjangpendidikan = this.getAttribute('data-jenjangpendidikan'); // Assuming you have a data attribute for this
                 const tglkerja = this.getAttribute('data-tglkerja'); // Assuming you have a data attribute for this
+                const profile = this.getAttribute('data-profile'); // Assuming you have a data attribute for this
+
                 // Set values in the modal
                 document.getElementById('edit_idpeg').value = idpeg;
                 document.getElementById('edit_iddep').value = iddep;
@@ -551,6 +573,10 @@ $(document).ready(function() {
                 document.getElementById('edit_cuti').value = cuti;
                 document.getElementById('edit_jenjangpendidikan').value = jenjangpendidikan;
                 document.getElementById('edit_tglkerja').value = tglkerja;
+
+                 // Set the current profile picture source
+                document.getElementById('current_profile_picture').src = 'foto_peg/' + profile; // Set the src for current profile picture
+
 
                 // // Load jabatan options based on the selected department
                 if (iddep !== "") {
