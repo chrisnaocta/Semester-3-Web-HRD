@@ -1,11 +1,7 @@
 <?php
 session_start();
 require 'config.php';
-
-if (!isset($_SESSION['iduser'])) {
-    header("Location: login.php");
-    exit();
-}
+require 'login_session.php';
 
 $iduser = $_SESSION['iduser'];
 
@@ -26,11 +22,10 @@ $stmt->close();
 
 // Ambil data dari tabel jabatan
 $result = $conn->query("
-    SELECT j.idjab, j.jabatan, d.departemen, d.iddep
-    FROM jabatan j
-    JOIN departemen_jabatan dj ON j.idjab = dj.idjab
-    JOIN departemen d ON dj.iddep = d.iddep
-    ORDER BY j.idjab ASC
+    SELECT jabatan.idjab, jabatan.jabatan, departemen.departemen, departemen.iddep
+    FROM jabatan
+    JOIN departemen ON jabatan.iddep = departemen.iddep
+    ORDER BY jabatan.idjab ASC
 ");
 
 // Dapatkan nomor urut terbaru untuk idjab baru
@@ -76,9 +71,10 @@ if (isset($_SESSION['message'])) {
                         <table id="jabatanTable" class="table table-striped table-bordered table-hover">    
                             <thead class="text-center table-danger">
                                 <tr>
-                                    <th>No</th>
-                                    <th>Kode</th>
+                                    <th style="width: 1%;">No</th>
+                                    <th style="width: 5%;">Kode</th>
                                     <th>Nama Jabatan</th>
+                                    <th>Nama Departemen</th>
                                     <th>Aksi</th>
                                 </tr>
                             </thead>
@@ -91,6 +87,7 @@ if (isset($_SESSION['message'])) {
                                         echo "<td class='text-center'>" . $no++ . "</td>";
                                         echo "<td class='text-center'>" . htmlspecialchars($jabatan['idjab']) . "</td>";
                                         echo "<td>" . htmlspecialchars($jabatan['jabatan']) . "</td>";
+                                        echo "<td>" . htmlspecialchars($jabatan['departemen']) . "</td>";
                                         echo "<td class='text-center'>";
                                         echo "<div class='d-flex justify-content-center'>";
                                         echo "<button class='btn btn-warning btn-sm edit-btn mr-1'

@@ -1,6 +1,7 @@
 <?php
 session_start();
 require 'config.php';
+require 'login_session.php';
 require 'fpdf/fpdf.php';
 
 if (!isset($_SESSION['iduser'])) {

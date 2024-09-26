@@ -1,6 +1,7 @@
 <?php
 session_start();
 require 'config.php';
+require 'login_session.php';
 
 if($_SERVER['REQUEST_METHOD'] == 'POST'){
     // Ambil input dari form

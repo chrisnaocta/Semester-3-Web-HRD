@@ -3,11 +3,6 @@ session_start();
 require 'config.php';
 require 'login_session.php';
 
-if (!isset($_SESSION['iduser'])) {
-    header("Location: login.php");
-    exit();
-}
-
 $iduser = $_SESSION['iduser'];
 
 // Ambil data user dari database

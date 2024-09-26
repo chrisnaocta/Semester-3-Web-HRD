@@ -1,10 +1,7 @@
 <?php
 session_start();
-// Cek apakah pengguna sudah login
-if (!isset($_SESSION['user'])) {
- header('Location: login.php');
- exit;
-}
+require 'login_session.php';
+
 // Mendapatkan informasi pengguna
 $user = $_SESSION['user'];
 include('head.php');

@@ -1,5 +1,6 @@
 <?php
 require 'config.php';
+require 'login_session.php';
 
 function query($query){
     global $result, $conn;

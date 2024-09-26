@@ -1,4 +1,5 @@
 <?php
+require 'user_session.php';
 // success.php
 if (isset($_GET['iduser'])) {
     $iduser = htmlspecialchars($_GET['iduser']);
@@ -32,6 +33,7 @@ if (isset($_GET['iduser'])) {
                 <p>Your registration was successful!</p>
                 <p><strong>Your User ID is: <?php echo $iduser; ?></strong></p>
                 <a href="register.php" class="btn btn-primary">Register Another User</a>
+                <a href="login.php" class="btn btn-primary">Go to Login</a>
             </div>
         </div>
     </div>
