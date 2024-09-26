@@ -4,11 +4,6 @@ require 'config.php';
 require 'login_session.php';
 require 'fpdf/fpdf.php';
 
-if (!isset($_SESSION['iduser'])) {
-    header("Location: login.php");
-    exit();
-}
-
 //Ambil data nama usaha dan alamat dari database
 $stmt = $conn->prepare("SELECT nama, alamat FROM namausaha LIMIT 1");
 $stmt->execute();
@@ -42,6 +37,7 @@ $pdf -> Ln(2);
 $pdf -> SetFont('Arial','B',11);
 $pdf ->Cell(7, 10,'No',1,0,'C');
 $pdf ->Cell(10, 10,'Id',1,0,'C');
+$pdf ->Cell(40, 40,'Foto',1,0,'C');
 $pdf ->Cell(25, 10, 'Nama', 1, 0, 'C');
 $pdf ->Cell(45, 10, 'Departemen', 1, 0, 'C');
 $pdf ->Cell(45, 10, 'Jabatan', 1, 0, 'C');
@@ -56,40 +52,54 @@ $pdf ->Cell(25, 10, 'Cuti', 1, 0, 'C');
 $pdf ->Cell(25, 10, 'Pendidikan', 1, 0, 'C');
 $pdf ->Cell(27, 10, 'Tanggal Kerja', 1, 1, 'C');
 
-//Tambahkan data tabel
+// Tambahkan data tabel
 $pdf->SetFont('Arial', '', 10);
 $no = 1;
 
 while ($row = $result->fetch_assoc()) {
     // Simpan posisi awal untuk Y
     $yStart = $pdf->GetY();
+    
+    // Tentukan tinggi default per baris
+    $cellHeight = 10;
 
-    // Buat sel untuk No, Id, Nama, dan Departemen dengan tinggi yang sama
-    $pdf->Cell(7, 10, $no++, 1, 0, 'C');
-    $pdf->Cell(10, 10, $row['idpeg'], 1, 0, 'C');
-    $pdf->Cell(25, 10, $row['nama'], 1, 0, 'L');
-    $pdf->Cell(45, 10, $row['departemen'], 1, 0, 'L');
+    // Simpan posisi awal X untuk mengembalikan posisi setelah MultiCell
+    $xStart = $pdf->GetX();
 
-    // Simpan posisi sebelum MultiCell untuk jabatan
-    $x = $pdf->GetX();
-    $y = $pdf->GetY();
+    // Buat semua sel dalam satu baris dengan tinggi minimal default
+    $pdf->Cell(7, $cellHeight+20, $no++, 1, 0, 'C');
+    $pdf->Cell(10, $cellHeight+20, $row['idpeg'], 1, 0, 'C');
 
-    // Ambil jabatan dan gunakan MultiCell
+    // Add employee photo (assumed photo path is stored in 'foto' column)
+    $photoPath = 'foto_peg/' . $row['foto']; // Make sure this path is correct
+    if (file_exists($photoPath)) {
+        $pdf->Image($photoPath, $pdf->GetX(), $yStart, 20, 20); // Use yStart for Y position
+    } else {
+        // Optional: You could handle missing images
+        $pdf->Cell(20, 20, '', 1, 0, 'L'); // Placeholder if the image does not exist
+    }
+
+    $pdf->Cell(25, $cellHeight+20, $row['nama'], 1, 0, 'L');
+    $pdf->Cell(45, $cellHeight+20, $row['departemen'], 1, 0, 'L');
+
+    // Ambil posisi sebelum MultiCell untuk jabatan
+    $xJabatan = $pdf->GetX();
+    $yJabatan = $pdf->GetY();
+
+    // MultiCell untuk jabatan
     $jabatan = $row['jabatan'];
-    $pdf->MultiCell(45, 10, $jabatan, 1, 'L');
+    $pdf->MultiCell(45, $cellHeight, $jabatan, 1, 'L'); // Gunakan tinggi per baris 5 untuk MultiCell
 
     // Hitung tinggi yang digunakan oleh MultiCell
-    $height = $pdf->GetY() - $y; // Hitung tinggi yang digunakan
+    $heightJabatan = $pdf->GetY() - $yJabatan;
 
-    // Kembalikan posisi ke kolom berikutnya
-    $pdf->SetXY($x + 45, $y); // Kembalikan X ke posisi yang tepat
+    // Kembalikan posisi X ke kolom berikutnya setelah jabatan
+    $pdf->SetXY($xJabatan + 45, $yJabatan);
 
-    // Buat sel untuk alamat, telepon, email, gaji, dan kolom lainnya dengan tinggi yang konsisten
-    // Hitung tinggi maksimum untuk semua sel
-    $maxHeight = max($height, 10); // Atur tinggi minimum 10 untuk konsistensi
+    // Tentukan tinggi maksimum untuk baris saat ini
+    $maxHeight = max($cellHeight, $heightJabatan + 20); // Corrected here
 
-    // Buat semua sel dengan tinggi yang sama
-    // Pastikan semua sel di kolom lainnya mengikuti tinggi jabatan
+    // Buat sel di kolom lainnya mengikuti tinggi maksimum
     $pdf->Cell(45, $maxHeight, $row['alamat'], 1, 0, 'L');
     $pdf->Cell(27, $maxHeight, $row['telepon'], 1, 0, 'L');
     $pdf->Cell(45, $maxHeight, $row['email'], 1, 0, 'L');
@@ -101,9 +111,10 @@ while ($row = $result->fetch_assoc()) {
     $pdf->Cell(25, $maxHeight, $row['jenjangpendidikan'], 1, 0, 'L');
     $pdf->Cell(27, $maxHeight, $row['tglkerja'], 1, 1, 'L');
 
-    // Kembalikan posisi Y ke Y Start untuk iterasi berikutnya
-    $pdf->SetY(max($yStart, $pdf->GetY()));
+    // Kembalikan posisi Y untuk iterasi berikutnya
+    $pdf->SetY($yStart + $maxHeight);
 }
+
 
 //Output PDF
 $pdf -> Output('I', "Daftar_usaha.pdf");

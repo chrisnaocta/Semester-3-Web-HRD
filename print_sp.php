@@ -4,11 +4,6 @@ require 'config.php';
 require 'login_session.php';
 require 'fpdf/fpdf.php';
 
-if (!isset($_SESSION['iduser'])) {
-    header("Location: login.php");
-    exit();
-}
-
 // Ambil data nama usaha dan alamat dari database
 $stmt = $conn->prepare("SELECT nama, alamat, notelepon FROM namausaha LIMIT 1");
 $stmt->execute();

@@ -1,0 +1,11 @@
+.user-photo {
+    width: 100px; /* Initial width */
+    height: 100px; /* Initial height */
+    transition: transform 0.3s ease; /* Smooth hover effect */
+}
+
+/* Enlarge the photo when hovered */
+.user-photo:hover {
+    transform: scale(1.8); /* Enlarge the image to 120% of its size */
+    cursor: pointer; /* Change cursor to pointer */
+}
