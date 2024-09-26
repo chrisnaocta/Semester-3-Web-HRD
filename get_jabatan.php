@@ -8,11 +8,10 @@ if (isset($_POST['iddep'])) {
 
     // Pastikan $iddep benar-benar ada dan merupakan string
     if (!empty($iddep)) {
-        // Query untuk mendapatkan jabatan berdasarkan departemen
-        $query = "SELECT jabatan.idjab, jabatan.jabatan 
-                  FROM departemen_jabatan
-                  JOIN jabatan ON departemen_jabatan.idjab = jabatan.idjab
-                  WHERE departemen_jabatan.iddep = ?";
+        $query = "SELECT jabatan.idjab, jabatan.jabatan, departemen.departemen, departemen.iddep
+        FROM jabatan
+        JOIN departemen ON jabatan.iddep = departemen.iddep
+        WHERE jabatan.iddep =?";
         
         $stmt = $conn->prepare($query);
         $stmt->bind_param("s", $iddep); 

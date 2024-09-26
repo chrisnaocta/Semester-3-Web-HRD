@@ -3,12 +3,13 @@ session_start();
 require 'config.php';
 require 'login_session.php';
 
-// Ambil data dari tabel namausaha
-$pegawai = $conn->query("SELECT * FROM pegawai
-    LEFT JOIN 
-        departemen ON pegawai.iddep = departemen.iddep
-    LEFT JOIN 
-        jabatan ON pegawai.idjab = jabatan.idjab");
+// Ambil data dari tabel pegawai
+$pegawai = $conn->query(
+"SELECT * FROM pegawai
+        LEFT JOIN 
+            departemen ON pegawai.iddep = departemen.iddep
+        LEFT JOIN 
+            jabatan ON pegawai.idjab = jabatan.idjab");
 
 $iduser = $_SESSION['iduser'];
 
@@ -85,6 +86,8 @@ if (isset($_SESSION['message'])) {
                                     <th style="width: 0,5px;">No</th> 
                                     <th style="width: 1%;">Id</th>
                                     <th>Nama</th>
+                                    <th>Departemen</th>
+                                    <th>Jabatan</th>
                                     <th>Alamat</th>
                                     <th>Telepon</th>
                                     <th>Email</th>
@@ -107,6 +110,8 @@ if (isset($_SESSION['message'])) {
                                             <td> <?php echo $no++; ?> </td>
                                             <td> <?php echo $row["idpeg"]; ?> </td>
                                             <td> <?php echo $row["nama"]; ?> </td>
+                                            <td> <?php echo $row["departemen"]; ?> </td>
+                                            <td> <?php echo $row["jabatan"]; ?> </td>
                                             <td> <?php echo $row["alamat"]; ?> </td>
                                             <td> <?php echo $row["telepon"]; ?> </td>
                                             <td> <?php echo $row["email"]; ?> </td>
@@ -238,7 +243,11 @@ if (isset($_SESSION['message'])) {
                         <select class="form-control" id="add_skerja" name="skerja" required>
                             <option value="" disabled selected>Pilih Status Bekerja</option>
                             <option>Tetap</option>
+                            <option>Kontrak</option>
                             <option>Magang</option>
+                            <option>Pensiun</option>
+                            <option>PHK</option>
+                            <option>Keluar</option>
                         </select>
                     </div>
                     <div class="mb-3">
@@ -246,9 +255,9 @@ if (isset($_SESSION['message'])) {
                         <input type="text" class="form-control" id="add_cuti" minlength="1" maxlength="3" name="cuti"required>
                     </div>
                     <div class="mb-3">
-                        <label for="add_pendidikan" class="form-label">Pendidikan</label>
-                        <select class="form-control" id="add_pendidikan" name="jenjangpendidikan" required>
-                            <option value="" disabled selected>Pilih Status Bekerja</option>
+                        <label for="add_jenjangpendidikan" class="form-label">Pendidikan</label>
+                        <select class="form-control" id="add_jenjangpendidikan" name="jenjangpendidikan" required>
+                            <option value="" disabled selected>Pilih Jenjang Pendidikan</option>
                             <option>SMA</option>
                             <option>SMK</option>
                             <option>D3</option>
@@ -317,7 +326,7 @@ $(document).ready(function() {
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="editPegawaiModalLabel">Add Usaha</h5>
+                <h5 class="modal-title" id="editPegawaiModalLabel">Add Pegawai</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -391,7 +400,11 @@ $(document).ready(function() {
                         <select class="form-control" id="edit_skerja" name="skerja" required>
                             <option value="" disabled selected>Pilih Status Bekerja</option>
                             <option>Tetap</option>
+                            <option>Kontrak</option>
                             <option>Magang</option>
+                            <option>Pensiun</option>
+                            <option>PHK</option>
+                            <option>Keluar</option>
                         </select>
                     </div>
                     <div class="mb-3">
@@ -400,8 +413,8 @@ $(document).ready(function() {
                     </div>
                     <div class="mb-3">
                         <label for="edit_jenjangpendidikan" class="form-label">Pendidikan</label>
-                        <select class="form-control" id="add_pendidikan" name="jenjangpendidikan" required>
-                            <option value="" disabled selected>Pilih Status Bekerja</option>
+                        <select class="form-control" id="edit_jenjangpendidikan" name="jenjangpendidikan" required>
+                            <option value="" disabled selected>Pilih Jenjang Pendidikan</option>
                             <option>SMA</option>
                             <option>SMK</option>
                             <option>D3</option>
@@ -524,7 +537,9 @@ $(document).ready(function() {
                 // Set values in the modal
                 document.getElementById('edit_idpeg').value = idpeg;
                 document.getElementById('edit_iddep').value = iddep;
-                document.getElementById('edit_idjab').value = idjab;
+                // document.getElementById('edit_idjab').value = idjab;
+                // Tidakdiperlukan karena dalam AJAX sukses callback,
+                //kita sudah melakukan pengaturan nilai idjab setelah opsi jabatan berhasil dimuat melalui:
                 document.getElementById('edit_nama').value = nama;
                 document.getElementById('edit_alamat').value = alamat;
                 document.getElementById('edit_telepon').value = telepon;
@@ -536,6 +551,27 @@ $(document).ready(function() {
                 document.getElementById('edit_cuti').value = cuti;
                 document.getElementById('edit_jenjangpendidikan').value = jenjangpendidikan;
                 document.getElementById('edit_tglkerja').value = tglkerja;
+
+                // // Load jabatan options based on the selected department
+                if (iddep !== "") {
+                    $.ajax({
+                        url: 'get_jabatan.php',
+                        method: 'POST',
+                        data: { iddep: iddep },
+                        success: function(response) {
+                            // Update the jabatan dropdown
+                            $('#edit_idjab').html(response);
+
+                            // After loading the options, set the selected jabatan
+                            $('#edit_idjab').val(idjab);
+                        },
+                        error: function() {
+                            $('#edit_idjab').html('<option>Error loading jabatan</option>');
+                        }
+                    });
+                } else {
+                    $('#edit_idjab').html('<option value="">Pilih Jabatan</option>');
+                }
             });
         });
     });

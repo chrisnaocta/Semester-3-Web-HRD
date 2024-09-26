@@ -28,8 +28,12 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
             $imageExtension = strtolower(end($imageExtension));
             if(!in_array($imageExtension, $validExtensions)) {
                 $_SESSION['message'] = ['type' => 'error','text'=> 'Invalid image extension.'];
+                header('Location: profile.php');
+                exit();
             } else if ($fileSize > 1000000) {
                 $_SESSION['message'] = ['type' => 'error','text'=> 'File size is too large.'];
+                header('Location: profile.php');
+                exit();
             } else {
                 $imageName = $username . "." . $imageExtension;
 
@@ -38,25 +42,29 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
                 }
                 if (!move_uploaded_file($tmpName, 'foto/' . $imageName)) {
                     $_SESSION['message'] = ['type' => 'error','text'=> 'Terjadi kesalahan saat memperarui data.'];
+                    header('Location: profile.php');
+                    exit();
                 }
                 
                 $stmt = $conn->prepare("UPDATE login SET foto = ? WHERE iduser = ?");
                 $stmt->bind_param("si", $imageName, $iduser);
                 
-                if($stmt->execute()){
-                    $_SESSION['message'] = ['type' => 'success','text'=> 'Data jabatan berhasil diperbarui.'];
-                }else{
+                // Execute the statement
+                if ($stmt->execute()) {
+                    $_SESSION['message'] = ['type' => 'success','text'=> 'Data user berhasil diperbarui.'];
+                } else {
                     $_SESSION['message'] = ['type' => 'error','text'=> 'Terjadi kesalahan saat memperarui data.'];
                 }
             
                 $stmt->close();
                 header('Location: profile.php');
                 exit();
-
             }
         }
     } else {
-        $_SESSION['message'] = ['type' => 'error','text'=> 'Terjadi kesalahan saat memperarui data.'];
+        $_SESSION['message'] = ['type' => 'error','text'=> 'Password salah tidak bisa update foto.'];
+        header("Location: profile.php");
+        exit(); 
     }
 }else{
     header("Location: profile.php");

@@ -19,6 +19,13 @@ $stmt->execute();
 $stmt->bind_result($namaUsaha, $alamatUsaha);
 $stmt->fetch();
 $stmt->close();
+
+// Simpan pesan ke variabel dan hapus dari session
+$message = null;
+if (isset($_SESSION['message'])) {
+    $message = $_SESSION['message'];
+    unset($_SESSION['message']);
+}
 ?>
 
 <!-- Bootstrap 5 source -->
@@ -28,6 +35,9 @@ $stmt->close();
 <!-- DataTables -->
 <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
+
+<!-- Include jQuery first -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <style>
     table th {
@@ -120,13 +130,12 @@ $stmt->close();
 <script>
     // Show message if it exists in the session
     <?php if ($message): ?>
-            Swal.fire({
-                title: '<?php echo $message['type'] === 'success' ? 'Success!' : 'Error!'; ?>',
-                text: '<?php echo $message['text']; ?>',
-                icon: '<?php echo $message['type'] === 'success' ? 'success' : 'error'; ?>'
-            });
-    <?php endif; ?>     
-
+        Swal.fire({
+            title: '<?php echo $message['type'] === 'success' ? 'Success!' : 'Error!'; ?>',
+            text: '<?php echo $message['text']; ?>',
+            icon: '<?php echo $message['type'] === 'success' ? 'success' : 'error'; ?>'
+        });
+    <?php endif; ?>    
     document.addEventListener('DOMContentLoaded', function () {
     // Add event listener to all edit buttons
     document.querySelectorAll('.edit-btn').forEach(button => {
