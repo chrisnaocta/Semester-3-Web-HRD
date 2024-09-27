@@ -63,8 +63,8 @@ if (isset($_SESSION['message'])) {
             <div class="row">
                 <div class="col-md-12">
                     <div class="table-responsive">
-                        <table id="peringatanTable" class="table table-bordered table-striped table-hover">
-                            <thead class="text-center">
+                        <table id="peringatanTable" class="table table-striped table-bordered table-hover">
+                            <thead class="text-center table-success">
                                 <tr>
                                     <th>No</th>
                                     <th>No.Surat</th>
@@ -336,7 +336,7 @@ if (isset($_SESSION['message'])) {
         document.querySelectorAll('.print-btn').forEach(function(button) {
             button.addEventListener('click', function() {
                 var id = this.getAttribute('data-id');
-                window.location.href = 'print_sp.php?id=' + id;
+                window.open('print_sp.php?id=' + id, '_blank');
             });
         });
     });
