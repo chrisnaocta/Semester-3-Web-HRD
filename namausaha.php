@@ -5,7 +5,8 @@ require 'login_session.php';
 require 'read_namausaha.php';
 
 // Ambil data dari tabel namausaha
-$usaha = $conn->query("SELECT * FROM namausaha");
+$result = $conn->query("SELECT * FROM namausaha LIMIT 1");
+$usaha = $result->fetch_assoc();
 
 $iduser = $_SESSION['iduser'];
 
@@ -23,16 +24,6 @@ $stmt->execute();
 $stmt->bind_result($namaUsaha, $alamatUsaha);
 $stmt->fetch();
 $stmt->close();
-
-// Dapatkan nomor urut terbaru untuk idusaha baru
-$stmt = $conn->query("SELECT idusaha FROM namausaha ORDER BY idusaha DESC LIMIT 1");
-$latestidusaha= $stmt->fetch_assoc();
-$urut = 1;
-if ($latestidusaha) {
-    $latestNumber = (int) substr($latestidusaha['idusaha'], 1);
-    $urut = $latestNumber + 1;
-}
-$newidusaha = 'U' . str_pad($urut, 3, '0', STR_PAD_LEFT);
 
 
 // Simpan pesan ke variabel dan hapus dari session
@@ -64,88 +55,88 @@ if (isset($_SESSION['message'])) {
     <?php include 'sidebar.php'; ?>
     <div class="content" id="content">
         <div class="container-fluid mt-3" style="margin-left:15px">
-            <div class="row">
-                <div class="col-md-12 d-flex justify-content-between align-items-center">
-                    <h4>Identitas Usaha</h4>
-                    <div>
-                        <button type="button" class="btn btn-primary mb-3 mr-2" id="checkDataButton"><i class='fas fa-plus'></i> Add </button>
-                        <button type="button" class="btn btn-secondary mb-3" id="printButton"><i class='fas fa-print'></i> Print</button>
-                    </div>
+            <?php if (!$usaha) { 
+                $newidusaha = "U001";
+                ?>
+            <div class="col-md-12 d-flex justify-content-between align-items-center">
+                <button type="button" class="btn btn-primary mb-3 mr-2" data-bs-toggle="modal" data-bs-target="#addusahaModal"><i class='fas fa-plus'></i> Add Usaha </button>
+            </div>
+            <?php
+            } else {
+            ?>
+            <div class="card col-md-12">
+                <div class="card-title card-header">
+                    <b>Identitas Usaha</b>
+                </div>
+                <div class="table table-bordered">
+                    <table class="col-md-12">
+                        <tr>
+                            <th width="20%">Nama</th>
+                            <td width="80%"> <?php echo $usaha["nama"]; ?> </td>
+                        </tr>
+                        <tr>
+                            <th width="20%">Alamat</th>
+                            <td width="80%"> <?php echo $usaha["alamat"]; ?> </td>
+                        </tr>
+                        <tr>
+                            <th width="20%">No. Telepon</th>
+                            <td width="80%"> <?php echo $usaha["notelepon"]; ?> </td>
+                        </tr>
+                        <tr>
+                            <th width="20%">Fax</th>
+                            <td width="80%"> <?php echo $usaha["fax"]; ?> </td>
+                        </tr>
+                        <tr>
+                            <th width="20%">Email</th>
+                            <td width="80%"> <?php echo $usaha["email"]; ?> </td>
+                        </tr>
+                        <tr>
+                            <th width="20%">NPWP</th>
+                            <td width="80%"> <?php echo $usaha["npwp"]; ?> </td>
+                        </tr>
+                        <tr>
+                            <th width="20%">Bank</th>
+                            <td width="80%"> <?php echo $usaha["bank"]; ?> </td>
+                        </tr>
+                        <tr>
+                            <th width="20%">No. Account</th>
+                            <td width="80%"> <?php echo $usaha["noaccount"]; ?> </td>
+                        </tr>
+                        <tr>
+                            <th width="20%">Atas Nama</th>
+                            <td width="80%"> <?php echo $usaha["atasnama"]; ?> </td>
+                        </tr>
+                        <tr>
+                            <th width="20%">Pimpinan</th>
+                            <td width="80%"> <?php echo $usaha["pimpinan"]; ?> </td>
+                        </tr>
+                    </table>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="table-responsive">
-                        <table id="usahaTable" style="border: 3px;" class="table table-bordered table-hover">    
-                            <thead class="text-center table-primary" >
-                                <tr>
-                                    <th style="width: 1px;">No</th> 
-                                    <th style="width: 1%;">Id</th>
-                                    <th>Nama Usaha</th>
-                                    <th>Alamat</th>
-                                    <th>No Telepon</th>
-                                    <th>Fax</th>
-                                    <th>Email</th>
-                                    <th>NPWP</th>
-                                    <th>Bank</th>
-                                    <th>No Account</th>
-                                    <th>Atas Nama</th>
-                                    <th>Pimpinan</th>
-                                    <th>Aksi</th>
-                                </tr>
-                            </thead>
-                            <tbody class="text-center">
-                                <?php
-                                    if ($usaha && $usaha->num_rows > 0) {
-                                    $no = 1;
-                                    foreach($usaha as $row): ?>
-                                        <tr>
-                                            <td> <?php echo $no++; ?> </td>
-                                            <td> <?php echo $row["idusaha"]; ?> </td>
-                                            <td> <?php echo $row["nama"]; ?> </td>
-                                            <td> <?php echo $row["alamat"]; ?> </td>
-                                            <td> <?php echo $row["notelepon"]; ?> </td>
-                                            <td> <?php echo $row["fax"]; ?> </td>
-                                            <td> <?php echo $row["email"]; ?> </td>
-                                            <td> <?php echo $row["npwp"]; ?> </td>
-                                            <td> <?php echo $row["bank"]; ?> </td>
-                                            <td> <?php echo $row["noaccount"]; ?> </td>
-                                            <td> <?php echo $row["atasnama"]; ?> </td>
-                                            <td> <?php echo $row["pimpinan"]; ?> </td>
-                                            <td>
-                                                <div class="d-flex justify-content-center">
-                                                    <button class='btn btn-warning btn-sm edit-btn mr-1' 
-                                                            data-bs-toggle='modal' 
-                                                            data-bs-target='#editusaha'
-                                                            data-idusaha='<?php echo htmlspecialchars($row['idusaha']); ?>'
-                                                            data-nama='<?php echo htmlspecialchars($row['nama']); ?>'
-                                                            data-alamat='<?php echo htmlspecialchars($row['alamat']); ?>'
-                                                            data-notelepon='<?php echo htmlspecialchars($row['notelepon']); ?>'
-                                                            data-fax='<?php echo htmlspecialchars($row['fax']); ?>'
-                                                            data-email='<?php echo htmlspecialchars($row['email']); ?>'
-                                                            data-npwp='<?php echo htmlspecialchars($row['npwp']); ?>'
-                                                            data-bank='<?php echo htmlspecialchars($row['bank']); ?>'
-                                                            data-noaccount='<?php echo htmlspecialchars($row['noaccount']); ?>'
-                                                            data-atasnama='<?php echo htmlspecialchars($row['atasnama']); ?>'
-                                                            data-pimpinan='<?php echo htmlspecialchars($row['pimpinan']); ?>'>
-                                                        <i class='fas fa-edit'></i> Edit
-                                                    </button>
-                                                    <button class="btn btn-danger btn-sm delete-btn"
-                                                                    data-id="<?php echo htmlspecialchars($row['idusaha']); ?>">
-                                                                <i class="fas fa-trash"></i> Delete
-                                                    </button>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <?php endforeach ?>
-                                        <?php } else { ?>
-                                            <tr><td colspan="13" class="text-center">No data found</td></tr>
-                                <?php } ?>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+            <div class="col-md-12 d-flex justify-content-between align-items-center">
+            <button class='btn btn-warning btn-sm edit-btn mr-1' 
+                    data-bs-toggle='modal' 
+                    data-bs-target='#editusaha'
+                    data-idusaha='<?php echo htmlspecialchars($usaha['idusaha']); ?>'
+                    data-nama='<?php echo htmlspecialchars($usaha['nama']); ?>'
+                    data-alamat='<?php echo htmlspecialchars($usaha['alamat']); ?>'
+                    data-notelepon='<?php echo htmlspecialchars($usaha['notelepon']); ?>'
+                    data-fax='<?php echo htmlspecialchars($usaha['fax']); ?>'
+                    data-email='<?php echo htmlspecialchars($usaha['email']); ?>'
+                    data-npwp='<?php echo htmlspecialchars($usaha['npwp']); ?>'
+                    data-bank='<?php echo htmlspecialchars($usaha['bank']); ?>'
+                    data-noaccount='<?php echo htmlspecialchars($usaha['noaccount']); ?>'
+                    data-atasnama='<?php echo htmlspecialchars($usaha['atasnama']); ?>'
+                    data-pimpinan='<?php echo htmlspecialchars($usaha['pimpinan']); ?>'>
+                <i class='fas fa-edit'></i> Edit
+            </button>
+            <button class="btn btn-danger btn-sm delete-btn"
+                            data-id="<?php echo htmlspecialchars($usaha['idusaha']); ?>">
+                        <i class="fas fa-trash"></i> Delete
+            </button>
             </div>
+            <br><br><br>
+            <?php } ?>
         </div>
     </div>
     <?php require 'footer.php'; ?>
