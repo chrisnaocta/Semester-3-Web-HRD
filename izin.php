@@ -103,7 +103,7 @@ if (isset($_SESSION['message'])) {
                                         echo "</tr>";
                                     }
                                 } else {
-                                    echo "<tr><td colspan='9' class='text-center'>No data found</td></tr>";
+                                    echo "<tr><td colspan='10' class='text-center'>No data found</td></tr>";
                                 }
                                 ?>                                
                             </tbody>                            
