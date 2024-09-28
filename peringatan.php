@@ -111,11 +111,10 @@ if (isset($_SESSION['message'])) {
             </div>
         </div>
     </div>
-    </div>
-    <script src="js/dashboard.js"></script>
-    </body>
-    </html>
 </div>
+<?php require 'footer.php'; ?>
+</div>
+
 <!-- Modal Add Peringatan -->
 <div class="modal fade" id="addPeringatanModal" tabindex="-1" aria-labelledby="addPeringatanModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -248,7 +247,8 @@ if (isset($_SESSION['message'])) {
 </script>
 
 <!-- Bootstrap JavaScript -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <!-- jQuery -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <!-- DataTables -->
