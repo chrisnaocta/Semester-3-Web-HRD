@@ -22,7 +22,7 @@
         <li><a href="profile.php"><span><i class="fas fa-user"></i> Profile</span></a></li>
         <li><a href="namausaha.php"><span><i class="fas fa-building"></i> Identitas Usaha</span></a></li>
         <li>
-            <a href="#" class="menu-toggle"><span><i class="fas fa-users"></i> Master</span><i class="fas fa-chevron-right arrow"></i></a>
+            <a class="menu-toggle"><span><i class="fas fa-users"></i> Master</span><i class="fas fa-chevron-right arrow"></i></a>
             <ul class="sub-menu">
                 <li><a href="departemen.php"><span>Departemen</span></a></li>
                 <li><a href="jabatan.php"><span>Jabatan</span></a></li>
@@ -32,10 +32,10 @@
         <li>
             <a href="#" class="menu-toggle"><span><i class="fas fa-exchange-alt"></i> Transaksi</span><i class="fas fa-chevron-right arrow"></i></a>
             <ul class="sub-menu">
-                <li><a href="Peringatan.php"><span>Peringatan</span></a></li>
-                <li><a href="#"><span>Penghargaan</span></a></li>
-                <li><a href="#"><span>Izin</span></a></li>
-                <li><a href="#"><span>Cuti</span></a></li>
+                <li><a href="peringatan.php"><span>Peringatan</span></a></li>
+                <li><a href="penghargaan.php"><span>Penghargaan</span></a></li>
+                <li><a href="izin.php"><span>Izin</span></a></li>
+                <li><a href="cuti.php"><span>Cuti</span></a></li>
             </ul>
         </li>
         <li>
