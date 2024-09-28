@@ -64,7 +64,7 @@ if (isset($_SESSION['message'])) {
                 <div class="col-md-12">
                     <div class="table-responsive">
                         <table id="peringatanTable" class="table table-striped table-bordered table-hover">
-                            <thead class="text-center table-success">
+                            <thead class="text-center table-danger">
                                 <tr>
                                     <th>No</th>
                                     <th>No.Surat</th>
