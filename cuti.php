@@ -255,56 +255,67 @@ $(document).ready(function() {
     </div>
 </div>
 
+<!-- Bootstrap 5 source -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Include jQuery first -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- Include Bootstrap and DataTables -->
+<script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
+
 <script>
     document.addEventListener('click', function (e) {
-        if (e.target && e.target.matches('.edit-btn')) {
-            const id_cuti = e.target.getAttribute('data-id');
-            const tanggal = e.target.getAttribute('data-tanggal');
-            const daritgl = e.target.getAttribute('data-daritgl');
-            const lamacuti = e.target.getAttribute('data-lamacuti');
-            const alasan = e.target.getAttribute('data-alasan');
-            const ditetapkan = e.target.getAttribute('data-ditetapkan');
-            const pembuat_surat = e.target.getAttribute('data-pembuat_surat');
-            const idpeg = e.target.closest('tr').querySelector('td:nth-child(3)').innerText; // Ambil id pegawai dari kolom tabel
-            const namaPegawai = e.target.closest('tr').querySelector('td:nth-child(4)').innerText; // Ambil nama pegawai dari kolom tabel
+    // Pastikan yang diklik adalah tombol edit
+    if (e.target && e.target.closest('.edit-btn')) {
+        const btn = e.target.closest('.edit-btn');
+        
+        const id_cuti = btn.getAttribute('data-id');
+        const tanggal = btn.getAttribute('data-tanggal');
+        const daritgl = btn.getAttribute('data-daritgl');
+        const lamacuti = btn.getAttribute('data-lamacuti');
+        const alasan = btn.getAttribute('data-alasan');
+        const ditetapkan = btn.getAttribute('data-ditetapkan');
+        const pembuat_surat = btn.getAttribute('data-pembuat_surat');
 
-            document.getElementById('edit_id_cuti').value = id_cuti;
-            document.getElementById('edit_tanggal').value = tanggal;
-            document.getElementById('edit_daritgl').value = daritgl;
-            document.getElementById('edit_lamacuti').value = lamacuti;
-            document.getElementById('edit_alasan').value = alasan;
-            document.getElementById('edit_ditetapkan').value = ditetapkan;
-            document.getElementById('edit_pembuat_surat').value = pembuat_surat;
+        const tr = btn.closest('tr');
+        const idpeg = tr.querySelector('td:nth-child(3)').innerText; // Ambil id pegawai dari kolom tabel
+        const namaPegawai = tr.querySelector('td:nth-child(4)').innerText; // Ambil nama pegawai dari kolom tabel
 
-            // Set nama pegawai yang sesuai di combobox
-            const editPegawaiSelect = document.getElementById('edit_idpeg');
-            editPegawaiSelect.innerHTML = `<option value="${idpeg}">${namaPegawai}</option>`;
+        // Set nilai form modal edit
+        document.getElementById('edit_id_cuti').value = id_cuti;
+        document.getElementById('edit_tanggal').value = tanggal;
+        document.getElementById('edit_daritgl').value = daritgl;
+        document.getElementById('edit_lamacuti').value = lamacuti;
+        document.getElementById('edit_alasan').value = alasan;
+        document.getElementById('edit_ditetapkan').value = ditetapkan;
+        document.getElementById('edit_pembuat_surat').value = pembuat_surat;
 
-            // Ketika combobox di klik, load seluruh nama pegawai dari database
-            editPegawaiSelect.addEventListener('click', function() {
+        // Set combobox nama pegawai
+        const editPegawaiSelect = document.getElementById('edit_idpeg');
+        editPegawaiSelect.innerHTML = `<option value="${idpeg}">${namaPegawai}</option>`;
+
+        // Load seluruh pegawai dari database saat combobox diklik
+        editPegawaiSelect.addEventListener('click', function() {
+            if (editPegawaiSelect.options.length === 1) { // Jika belum pernah load data pegawai
                 $.ajax({
-                    url: 'get_pegawai_list.php', // Buat file terpisah untuk mengambil list pegawai
+                    url: 'get_pegawai_list.php',
                     method: 'GET',
                     success: function(response) {
                         editPegawaiSelect.innerHTML = response;
-                        editPegawaiSelect.value = idpeg; // Pastikan pegawai yang dipilih tetap terpilih
+                        editPegawaiSelect.value = idpeg; // Pastikan pegawai yang sedang dipilih tetap terpilih
                     },
                     error: function(xhr, status, error) {
-                        console.error('Failed to fetch pegawai list:', error);
+                        console.error('Gagal mendapatkan daftar pegawai:', error);
                     }
                 });
-            }, { once: true }); // Only load the pegawai list once when clicked
-        }
-    });
+            }
+        }, { once: true }); // Hanya load sekali
+    }
+});
 </script>
-
-<!-- Bootstrap JavaScript -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-<!-- jQuery -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<!-- DataTables -->
-<script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
 
 <script>
     // Menampilkan semua fasilitas pada tabel pada bootstrap
@@ -315,27 +326,6 @@ $(document).ready(function() {
         "ordering": true,
         "info": true,
         "autoWidth": false
-    });
-
-    // Menangani modal edit
-    document.addEventListener('click', function (e) {
-        if (e.target && e.target.matches('.edit-btn')) {
-            const id_cuti = e.target.getAttribute('data-id');
-            const tanggal = e.target.getAttribute('data-tanggal');
-            const daritgl = e.target.getAttribute('data-daritgl');
-            const lamacuti = e.target.getAttribute('data-lamacuti');
-            const alasan = e.target.getAttribute('data-alasan');
-            const ditetapkan = e.target.getAttribute('data-ditetapkan');
-            const pembuat_surat = e.target.getAttribute('data-pembuat_surat');
-
-            document.getElementById('edit_id_cuti').value = id_cuti;
-            document.getElementById('edit_tanggal').value = tanggal;
-            document.getElementById('edit_daritgl').value = daritgl;
-            document.getElementById('edit_lamacuti').value = lamacuti;
-            document.getElementById('edit_alasan').value = alasan;
-            document.getElementById('edit_ditetapkan').value = ditetapkan;
-            document.getElementById('edit_pembuat_surat').value = pembuat_surat;
-        }
     });
 
     <?php if ($message): ?>
