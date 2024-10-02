@@ -89,12 +89,18 @@ if (isset($_SESSION['message'])) {
                 <button class='btn btn-warning btn-sm edit-btn mr-1' 
                         data-bs-toggle='modal' 
                         data-bs-target='#editprofileModal'
-                        data-iduser='<?php echo htmlspecialchars($iduser); ?>'
-                        data-username='<?php echo htmlspecialchars($username); ?>'
-                        data-email='<?php echo htmlspecialchars($email); ?>'
                         >
                     <i class='fas fa-edit'></i> Edit Profile Picture
                 </button>
+                <button class='btn btn-primary btn-sm edit-btn mr-1' 
+                        data-bs-toggle='modal' 
+                        data-bs-target='#editpasswordModal'
+                        >
+                    <i class='fas fa-edit'></i> Change Password
+                </button>
+                </div>
+                <div>
+                
                 </div>
             </div>
         </div>
@@ -121,6 +127,35 @@ if (isset($_SESSION['message'])) {
                         <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
                     </div>
                     <button type="submit" class="btn btn-primary">Update</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Change Password -->
+<div class="modal fade" id="editpasswordModal" tabindex="-1" aria-labelledby="editpasswordModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editprofileModalLabel">Change password</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="edit_password.php" method="post" enctype="multipart/form-data">
+                    <div class="mb-3">
+                        <label for="current-password">Current Password</label> <br>
+                        <input type="password" class="form-control" name="current-password" id="current-password"required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="new-password" class="form-label">New Password</label>
+                        <input type="password" class="form-control" id="new-password" name="new-password" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="re-entered-password" class="form-label">Re-enter New Password</label>
+                        <input type="password" class="form-control" id="re-entered-password" name="re-entered-password" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Confirm</button>
                 </form>
             </div>
         </div>
