@@ -130,6 +130,10 @@ if (isset($_SESSION['message'])) {
                     data-pimpinan='<?php echo htmlspecialchars($usaha['pimpinan']); ?>'>
                 <i class='fas fa-edit'></i> Edit
             </button>
+            <button type="button" class='btn btn-success btn-sm print-btn' id="printButton"
+                data-id="<?php echo htmlspecialchars($row['idusaha']); ?>">
+                <i class='fas fa-print'></i>
+            </button>
             <button class="btn btn-danger btn-sm delete-btn"
                             data-id="<?php echo htmlspecialchars($usaha['idusaha']); ?>">
                         <i class="fas fa-trash"></i> Delete
