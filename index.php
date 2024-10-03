@@ -19,6 +19,43 @@ $stmt->execute();
 $stmt->bind_result($namaUsaha, $alamatUsaha);
 $stmt->fetch();
 $stmt->close();
+
+// Ambil banyak pegawai dari database
+$result = $conn->query("SELECT COUNT(*) as count FROM pegawai");
+$row = $result->fetch_assoc();
+$jmlhpeg = $row['count'];
+
+// Ambil tgl awal dan akhir
+$month = intval(date('m'));
+$year = intval(date('Y'));
+if ($month < 12) {
+    $endmonth = $month+1;
+    $endyear = $year;
+} else {
+    $endmonth = 1;
+    $endyear = $year=+1;
+}
+$startdate = "$year-$month-01";
+$enddate = "$endyear-$endmonth-01";
+
+// Ambil jumlah penghargaan bulan ini berdasarkan tanggal surat
+$sql = "SELECT COUNT(*) as count FROM penghargaan WHERE tanggal >= '$startdate' AND tanggal < '$enddate'";
+$result = $conn->query($sql);
+$row = $result->fetch_assoc();
+$jmlhpeng = $row['count'];
+
+// Ambil jumlah peringatan bulan ini berdasarkan tanggal surat
+$sql = "SELECT COUNT(*) as count FROM peringatan WHERE tanggal >= '$startdate' AND tanggal < '$enddate'";
+$result = $conn->query($sql);
+$row = $result->fetch_assoc();
+$jmlhper = $row['count'];
+
+// Ambil jumlah cuti bulan ini berdasarkan tanggal surat
+$sql = "SELECT COUNT(*) as count FROM cuti WHERE tanggal >= '$startdate' AND tanggal < '$enddate'";
+$result = $conn->query($sql);
+$row = $result->fetch_assoc();
+$jmlhcut = $row['count'];
+
 ?>
 
 <?php require 'head.php'; ?>
@@ -51,7 +88,7 @@ $stmt->close();
                             <div class="d-flex justify-content-between align-items-center">
                                 <div>
                                     <h5 class="card-title">Total Pegawai</h5>
-                                    <h4><p>150</p></h4>
+                                    <h4><p><?php echo "$jmlhpeg";?></p></h4>
                             </div>
                             <div class="card-icon-wrapper">
                                 <i class="fas fa-users card-icon"></i>
@@ -66,7 +103,7 @@ $stmt->close();
                         <div class="d-flex justify-content-between align-items-center">
                             <div>
                                 <h5>Penghargaan</h5>
-                                <h4><p>10</p></h4>
+                                <h4><p><?php echo "$jmlhpeng";?></p></h4>
                             </div>
                             <div class="card-icon-wrapper">
                                 <i class="fas fa-award card-icon"></i>
@@ -81,7 +118,7 @@ $stmt->close();
                         <div class="d-flex justify-content-between align-items-center">
                             <div>
                                 <h5>Peringatan</h5>
-                                <h4><p>20</p></h4>
+                                <h4><p><?php echo "$jmlhper";?></p></h4>
                             </div>
                             <div class="card-icon-wrapper">
                                 <i class="fas fa-exclamation-triangle card-icon"></i>
@@ -96,7 +133,7 @@ $stmt->close();
                         <div class="d-flex justify-content-between align-items-center">
                             <div>
                                 <h5>Cuti</h5>
-                                <h4><p>23</p></h4>
+                                <h4><p><?php echo "$jmlhcut";?></p></h4>
                             </div>
                             <div class="card-icon-wrapper">
                                 <i class="fas fa-calendar-alt card-icon"></i>
