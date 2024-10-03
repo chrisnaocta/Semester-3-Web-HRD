@@ -83,7 +83,7 @@ if (isset($_SESSION['message'])) {
                                     <th>Telepon</th>
                                     <th>Email</th>
                                     <th>Gaji</th>
-                                    <th>Status</th>
+                                    <th>Status Menikah</th>
                                     <th>Gender</th>
                                     <th>Status Kerja</th>
                                     <th>Cuti</th>
@@ -225,7 +225,7 @@ if (isset($_SESSION['message'])) {
                         <label for="add_status" class="form-label">Status</label>
                         <select class="form-control" id="add_status" name="status" required>
                             <option value="" disabled selected>Pilih Status Menikah</option>
-                            <option>Menikah</option>
+                            <option>Sudah</option>
                             <option>Belum</option>
                         </select>
                     </div>
@@ -386,7 +386,7 @@ $(document).ready(function() {
                         <label for="edit_status" class="form-label">Status</label>
                         <select class="form-control" id="edit_status" name="status" required>
                             <option value="" disabled selected>Pilih Status Menikah</option>
-                            <option>Menikah</option>
+                            <option>Sudah</option>
                             <option>Belum</option>
                         </select>
                     </div>

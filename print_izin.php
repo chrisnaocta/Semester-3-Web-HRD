@@ -80,7 +80,7 @@ $tabWidth = 15;
 $valueWidth = 80; // Lebar untuk nilai seperti ID Pegawai dan Nama Pegawai
 
 // NIK
-$pdf->Cell($labelWidth, 10, 'NIK', 0, 0, 'L'); // Kolom label NIK
+$pdf->Cell($labelWidth, 10, 'ID', 0, 0, 'L'); // Kolom label NIK
 $pdf->Cell($tabWidth, 10, ':', 0, 0, 'L'); 
 $pdf->Cell($valueWidth, 10, $idpeg, 0, 1, 'L'); // Kolom nilai NIK
 
