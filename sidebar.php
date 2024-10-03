@@ -38,7 +38,7 @@
                 <li><a href="cuti.php"><span>Cuti</span></a></li>
             </ul>
         </li>
-        <li>
+        <!-- <li>
             <a href="#" class="menu-toggle"><span><i class="fas fa-chart-line"></i> Report</span><i class="fas fa-chevron-right arrow"></i></a>
             <ul class="sub-menu">
                 <li><a href="print_pembiayaan.php"><span>Pegawai</span></a></li>
@@ -47,7 +47,7 @@
                 <li><a href="print_kategori.php"><span>Izin</span></a></li>
                 <li><a href="print_tipe.php"><span>Cuti</span></a></li>
             </ul>
-        </li>
+        </li> -->
         <li><a href="logout.php"><span><i class="fas fa-sign-out-alt"></i> Logout</span></a></li>
     </ul>
     <div class="toggle-sidebar">
