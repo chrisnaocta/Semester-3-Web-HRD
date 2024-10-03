@@ -11,13 +11,22 @@ $stmt->bind_result($namaUsaha, $alamatUsaha);
 $stmt->fetch();
 $stmt->close();
 
+// Ambil data dari GET
+$id = isset($_GET['id']) ? $_GET['id'] : '';
+
 //Ambil data dari tabel pegawai
-$result = $conn->query(
+$stmt1 = $conn->prepare(
     "SELECT * FROM pegawai
             LEFT JOIN 
                 departemen ON pegawai.iddep = departemen.iddep
             LEFT JOIN 
-                jabatan ON pegawai.idjab = jabatan.idjab");
+                jabatan ON pegawai.idjab = jabatan.idjab
+            WHERE idpeg = ?");
+
+$stmt1->bind_param('s', $id);
+$stmt1->execute();
+$result = $stmt1->get_result();
+$stmt1->close();
 
 //Buat PDF
 $pdf = new FPDF();
@@ -37,7 +46,7 @@ $pdf -> Ln(2);
 $pdf -> SetFont('Arial','B',11);
 $pdf ->Cell(7, 10,'No',1,0,'C');
 $pdf ->Cell(10, 10,'Id',1,0,'C');
-$pdf ->Cell(40, 40,'Foto',1,0,'C');
+$pdf ->Cell(40, 10,'Foto',1,0,'C');
 $pdf ->Cell(25, 10, 'Nama', 1, 0, 'C');
 $pdf ->Cell(45, 10, 'Departemen', 1, 0, 'C');
 $pdf ->Cell(45, 10, 'Jabatan', 1, 0, 'C');

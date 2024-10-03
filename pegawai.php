@@ -64,7 +64,6 @@ if (isset($_SESSION['message'])) {
                     <h4>Kepegawaian</h4>
                     <div>
                         <button type="button" class="btn btn-primary mb-3 mr-2" data-bs-toggle="modal" data-bs-target="#addPegawaiModal"><i class='fas fa-plus'></i> Add </button>
-                        <button type="button" class="btn btn-secondary mb-3" id="printButton"><i class='fas fa-print'></i> Print</button>
                     </div>
                 </div>
             </div>
@@ -137,6 +136,11 @@ if (isset($_SESSION['message'])) {
                                                         data-tglkerja='<?php echo htmlspecialchars($row['tglkerja']); ?>'
                                                         data-profile='<?php echo htmlspecialchars($row['foto']); ?>'> 
                                                         <i class='fas fa-edit'></i> 
+                                                    </button>
+                                                    <button type="button" class='btn btn-success btn-sm print-btn' id="printButton"
+                                                        data-id="<?php echo htmlspecialchars($row['idpeg']); ?>">
+                                                        <i class='fas fa-print'>
+                                                        </i>
                                                     </button>
                                                     <button class="btn btn-danger btn-sm delete-btn"
                                                                     data-id="<?php echo htmlspecialchars($row['idpeg']); ?>">
@@ -650,11 +654,13 @@ $(document).ready(function() {
         });
     });
 
-    // Print ke PDF        
-    $(document).ready(function() {
-        // Handle print button click
-        $('#printButton').click(function() {
-            window.open('print_pegawai.php', '_blank');
+    //Print ke PDF 
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.print-btn').forEach(function(button) {
+            button.addEventListener('click', function() {
+                var id = this.getAttribute('data-id');
+                window.open('print_pegawai.php?id=' + id, '_blank');
+            });
         });
     });
 </script>
