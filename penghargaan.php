@@ -93,9 +93,9 @@ if (isset($_SESSION['message'])) {
                                         echo "<td>" . htmlspecialchars($penghargaan['pembuat_surat']) . "</td>";
                                         echo "<td class='text-center'>";
                                         echo "<div class='d-flex justify-content-center'>";
-                                        echo "<button class='btn btn-warning btn-sm edit-btn mr-1' data-bs-toggle='modal' data-bs-target='#editPenghargaanModal' data-id='" . htmlspecialchars($penghargaan['id_penghargaan']) . "' data-tanggal='" . htmlspecialchars($penghargaan['tanggal']) . "' data-alasan='" . htmlspecialchars($penghargaan['alasan']) . "' data-ditetapkan='" . htmlspecialchars($penghargaan['ditetapkan']) . "' data-pembuat_surat='" . htmlspecialchars($penghargaan['pembuat_surat']) ."'><i class='fas fa-edit'></i> Edit</button>";
-                                        echo "<button class='btn btn-danger btn-sm delete-btn mr-1' data-id='" . htmlspecialchars($penghargaan['id_penghargaan']) . "'><i class='fas fa-trash'></i> Delete</button>";
-                                        echo "<button class='btn btn-success btn-sm print-btn' data-id='" . htmlspecialchars($penghargaan['id_penghargaan']) . "'><i class='fas fa-print'></i> Print</button>";
+                                        echo "<button class='btn btn-warning btn-sm edit-btn mr-1' data-bs-toggle='modal' data-bs-target='#editPenghargaanModal' data-id='" . htmlspecialchars($penghargaan['id_penghargaan']) . "' data-tanggal='" . htmlspecialchars($penghargaan['tanggal']) . "' data-alasan='" . htmlspecialchars($penghargaan['alasan']) . "' data-ditetapkan='" . htmlspecialchars($penghargaan['ditetapkan']) . "' data-pembuat_surat='" . htmlspecialchars($penghargaan['pembuat_surat']) ."'><i class='fas fa-edit'></i> </button>";
+                                        echo "<button class='btn btn-danger btn-sm delete-btn mr-1' data-id='" . htmlspecialchars($penghargaan['id_penghargaan']) . "'><i class='fas fa-trash'></i> </button>";
+                                        echo "<button class='btn btn-success btn-sm print-btn' data-id='" . htmlspecialchars($penghargaan['id_penghargaan']) . "'><i class='fas fa-print'></i> </button>";
                                         echo "</div>";
                                         echo "</td>";
                                         echo "</tr>";

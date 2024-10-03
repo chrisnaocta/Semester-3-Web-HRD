@@ -97,9 +97,9 @@ if (isset($_SESSION['message'])) {
                                         data-jabatan='" . htmlspecialchars($jabatan['jabatan']) .  "'
                                         data-departemen='" . htmlspecialchars($jabatan['departemen']) .  "'
                                         data-iddep='" . htmlspecialchars($jabatan['iddep']) . "'>   
-                                        <i class='fas fa-edit'></i> Edit
+                                        <i class='fas fa-edit'></i> 
                                         </button>";
-                                        echo "<button class='btn btn-danger btn-sm delete-btn' data-id='" . htmlspecialchars($jabatan['idjab']) . "'><i class='fas fa-trash'></i> Delete</button>";
+                                        echo "<button class='btn btn-danger btn-sm delete-btn' data-id='" . htmlspecialchars($jabatan['idjab']) . "'><i class='fas fa-trash'></i> </button>";
                                         echo "</div>";
                                         echo "</td>";
                                         echo "</tr>";

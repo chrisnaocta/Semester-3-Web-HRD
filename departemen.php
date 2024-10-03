@@ -91,11 +91,11 @@ if (isset($_SESSION['message'])) {
                                                             data-bs-target="#editdepartemenModal"
                                                             data-id="<?php echo htmlspecialchars($row['iddep']); ?>"
                                                             data-name="<?php echo htmlspecialchars($row['departemen']); ?>">
-                                                        <i class="fas fa-edit"></i> Edit
+                                                        <i class="fas fa-edit"></i> 
                                                     </button>
                                                     <button class="btn btn-danger btn-sm delete-btn"
                                                             data-id="<?php echo htmlspecialchars($row['iddep']); ?>">
-                                                        <i class="fas fa-trash"></i> Delete
+                                                        <i class="fas fa-trash"></i> 
                                                     </button>
                                                 </div>
                                             </td>

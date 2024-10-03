@@ -136,11 +136,11 @@ if (isset($_SESSION['message'])) {
                                                         data-jenjangpendidikan='<?php echo htmlspecialchars($row['jenjangpendidikan']); ?>' 
                                                         data-tglkerja='<?php echo htmlspecialchars($row['tglkerja']); ?>'
                                                         data-profile='<?php echo htmlspecialchars($row['foto']); ?>'> 
-                                                        <i class='fas fa-edit'></i> Edit
+                                                        <i class='fas fa-edit'></i> 
                                                     </button>
                                                     <button class="btn btn-danger btn-sm delete-btn"
                                                                     data-id="<?php echo htmlspecialchars($row['idpeg']); ?>">
-                                                                <i class="fas fa-trash"></i> Delete
+                                                                <i class="fas fa-trash"></i>
                                                     </button>
                                                 </div>
                                             </td>
