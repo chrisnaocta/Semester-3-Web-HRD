@@ -58,17 +58,12 @@ $pdf->SetFont('Arial', 'B', 18);
 $pdf->Cell(0, 10, 'Data Usaha', 0, 1, 'C');
 $pdf->SetDrawColor(0, 0, 0); // Warna hitam
 $pdf->Line(80, $pdf->GetY(), 130, $pdf->GetY()); // Garis bawah judul Data Pegawai
-$pdf->Cell(0, 10, 'Id: '. $row1['idusaha'], 0, 1, 'C');
 $pdf->Ln(3);
 
 $pdf->SetFont('Arial', 'B', 11);
 // Set lebar kolom untuk label dan nilai
 $labelWidth = 25; // Lebar untuk label seperti 'ID' dan 'Nama'
 $valueWidth = 30; // Lebar untuk nilai seperti ID Usaha dan Nama Usaha
-
-// Id Pegawai
-$pdf->Cell($labelWidth, 10, 'Id', 0, 0, 'L'); // Kolom label ID
-$pdf->Cell($labelWidth, 10, ': ' . $row1['idusaha'], 0, 1, 'L'); 
 
 // Nama
 $pdf->Cell($labelWidth, 10, 'Nama', 0, 0, 'L'); // Kolom label Nama
@@ -138,5 +133,5 @@ $pdf->Cell($labelWidth, 10, ': '. $row1['pimpinan'], 0, 1, 'L');
 $pdf->Ln(2);
 
 //Output PDF
-$pdf -> Output('I', "Daftar_usaha.pdf");
+$pdf -> Output('I', "Data_usaha.pdf");
 ?>
